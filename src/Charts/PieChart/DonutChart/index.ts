@@ -1,8 +1,8 @@
 import { Column, EChartsOption, getBasicPieChartOptions } from "../../..";
 
 export const getDonutChartOptions = (
-    categoryColumn: Column,
-    valueColumn: Column,
+    categoryColumn: Column<string | number | null>,
+    valueColumn: Column<string | number | null>,
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getBasicPieChartOptions(categoryColumn, valueColumn);

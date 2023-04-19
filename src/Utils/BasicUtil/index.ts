@@ -1,22 +1,42 @@
 import { AnalysisColumn, Column, EChartsOption } from "../../interfaces";
 import { AnalysisColumnValueType, NumberCalculateType, StringCalculateType } from "../BasicEnum";
 
-export const isNumberValue = (value: any): boolean => {
-    if (value === null || value === "null") return true;
-    if (Number.isFinite(value)) return true;
-    return false;
+export const isEmptyValue = (value: any): boolean => {
+    let result: boolean = false;
+
+    if (value === null ||
+        value === "null" ||
+        value === undefined) {
+
+        result = true;
+    }
+    return result;
 }
 
-export const getColumnValueListType = (valueList: any[]): AnalysisColumnValueType => {
+export const isNumberValue = (value: any): boolean => {
+    let result: boolean = false;
+
+    if (Number.isFinite(value) ||
+        isEmptyValue(value)) {
+
+        result = true;
+    };
+    return result;
+}
+
+export const getColumnValueListType = (
+    valueList: any[]
+): AnalysisColumnValueType => {
     const valueListType = (Object.values(valueList).every(value => isNumberValue(value))) ?
         AnalysisColumnValueType.number
         : AnalysisColumnValueType.string;
     return valueListType;
 }
 
+
 export const createAnalysisColumn = (
-    column: Column,
-): AnalysisColumn => {
+    column: Column<string | number | null>,
+): AnalysisColumn<string | number | null> => {
     const { title, valueList, calculateType } = column;
 
     const valueType = getColumnValueListType(valueList);
@@ -33,7 +53,27 @@ export const createAnalysisColumn = (
     }
 }
 
-export const getMinColumnLength = (columnList: Column[]): number => {
+export const createCategoryColumn = (
+    column: Column<string | number | null>,
+): Column<string> => {
+    const { title, valueList } = column;
+    return {
+        title,
+        valueList: valueList.map(value => {
+            if (isEmptyValue(value)) {
+                return "(Blank)";
+            } else {
+                return "" + value;
+            }
+        })
+    }
+}
+
+export const filterOutListEmptyValues = <T>(valueList: T[]): T[] => {
+    return valueList.filter(value => !isEmptyValue(value));
+}
+
+export const getMinColumnLength = (columnList: Column<any>[]): number => {
     let minLength = Number.MAX_VALUE;
     columnList.forEach(column => {
         const columnLength = column.valueList.length
@@ -78,21 +118,14 @@ export const columnListToRowList = (columnsValueList: any): {}[] => {
 }
 
 export const getColumnValueCategoryCorrespondsOtherColumnValueListMap = (
-    mainColumn: Column,
-    otherColumnList: Column[]
-): Map<string, Map<string, any[]>> => {
-    let resultMap: Map<string, Map<string, any[]>> = new Map();
+    mainColumn: Column<string | number | null>,
+    otherColumnList: Column<string | number | null>[]
+): Map<string, Map<string, (string | number | null)[]>> => {
+    let resultMap: Map<string, Map<string, (string | number | null)[]>> = new Map();
 
     // redefine main column value type to string[] 
     // rename main column null values to "(Blank)"
-    let mainColumnValueList = mainColumn.valueList as string[]
-    mainColumnValueList = mainColumnValueList.map(value => {
-        if (value === null) {
-            return "(Blank)"
-        } else {
-            return "" + value;
-        }
-    });
+    const mainColumnValueList = createCategoryColumn(mainColumn).valueList;
 
     // find max column length
     const totalColumnList = otherColumnList.concat(mainColumn);
@@ -115,8 +148,8 @@ export const getColumnValueCategoryCorrespondsOtherColumnValueListMap = (
         const categoryValue: string = mainColumnValueList[i];
         if (resultMap.has(categoryValue)) {
             let otherColumnMap: Map<string, any[]> = resultMap.get(categoryValue) as Map<string, any[]>;
-            otherColumnList.forEach((column: Column) => {
-                const { title, valueList } = column
+            otherColumnList.forEach((column) => {
+                const { title, valueList } = column;
                 const yAxisValue = valueList[i];
                 otherColumnMap.get(title)!.push(yAxisValue);
             })
@@ -156,3 +189,47 @@ export const getListStandardDeviation = (numberList: number[]): number => {
     return standardDeviation;
 }
 
+export const getValueListCalculateValue = <T extends string | number>(
+    valueList: T[],
+    calculateType: StringCalculateType | NumberCalculateType
+): number => {
+    let result = 0;
+
+    switch (calculateType) {
+        case StringCalculateType.count:
+        case NumberCalculateType.count:
+            result = valueList.length;
+            break;
+        case StringCalculateType.countDifferent:
+        case NumberCalculateType.countDifferent:
+            result = new Set(valueList).size;
+            break;
+        case NumberCalculateType.sum:
+            result = (valueList as number[]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            break;
+        case NumberCalculateType.average:
+            const sum = (valueList as number[]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+            const count = valueList.length;
+            result = + (sum / count).toFixed(2);
+            break;
+        case NumberCalculateType.min:
+            const min = Math.min(...(valueList as number[]));
+            result = (min === Infinity) ? 0 : min;
+            break;
+        case NumberCalculateType.max:
+            const max = Math.max(...(valueList as number[]));
+            result = (max === -Infinity) ? 0 : max;
+            break;
+        case NumberCalculateType.standardDeviation:
+            result = + getListStandardDeviation((valueList as number[])).toFixed(2);
+            break;
+        case NumberCalculateType.variance:
+            result = + getListVariance((valueList as number[])).toFixed(2);
+            break;
+        case NumberCalculateType.median:
+            result = + getListMedian((valueList as number[])).toFixed(2);
+            break;
+    }
+
+    return result;
+}

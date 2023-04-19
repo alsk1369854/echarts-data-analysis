@@ -2,8 +2,8 @@ import { Column, EChartsOption } from "../../..";
 import { getStackedLineChartOptions } from "../../LineChart"
 
 export const getBasicScatterChartOptions = (
-    xAxisColumn: Column,
-    yAxisColumn: Column,
+    xAxisColumn: Column<string | number | null>,
+    yAxisColumn: Column<string | number | null>,
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getStackedLineChartOptions(xAxisColumn, [yAxisColumn]);

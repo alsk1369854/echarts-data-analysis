@@ -2,13 +2,15 @@ import { AnalysisColumnValueType, NumberCalculateType, StringCalculateType } fro
 export { EChartsOption } from 'echarts';
 // export type EChartsOption = any;
 
-export interface Column {
+export type myColumnValueType = string | number | null;
+
+export interface Column<T extends string | number | null> {
     title: string,
-    valueList: (string | number | null)[],
+    valueList: T[],
     calculateType?: StringCalculateType | NumberCalculateType,
 }
 
-export interface AnalysisColumn extends Column {
+export interface AnalysisColumn<T extends string | number | null> extends Column<T> {
     valueType: AnalysisColumnValueType,
     calculateType: StringCalculateType | NumberCalculateType
 }

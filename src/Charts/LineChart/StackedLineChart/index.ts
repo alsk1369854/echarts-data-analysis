@@ -3,8 +3,8 @@ import { Column, EChartsOption } from './../../../interfaces';
 
 
 export const getStackedLineChartOptions = (
-    xAxisColumn: Column,
-    yAxisColumnList: Column[],
+    xAxisColumn: Column<string | number | null>,
+    yAxisColumnList: Column<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getStackedBarChartOptions(xAxisColumn, yAxisColumnList);
@@ -28,8 +28,8 @@ export const getStackedLineChartOptions = (
 }
 
 export const getStackedAreaLineChartOptions = (
-    xAxisColumn: Column,
-    yAxisColumnList: Column[],
+    xAxisColumn: Column<string | number | null>,
+    yAxisColumnList: Column<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getStackedLineChartOptions(xAxisColumn, yAxisColumnList);

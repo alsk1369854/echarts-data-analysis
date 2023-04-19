@@ -7,11 +7,11 @@ const testDataset = {
     deviceState: ["OK", "WARN", "NG"],
     deviceValue: [10, 15, 30]
 }
-const categoryColumn: Column = {
+const categoryColumn: Column<string> = {
     title: "deviceState",
     valueList: testDataset.deviceState,
 }
-const yAxisColumnList: Column[] = [
+const yAxisColumnList: Column<string | number>[] = [
     {
         title: "deviceName",
         valueList: testDataset.deviceName,
@@ -34,11 +34,36 @@ describe('Basic Radar Chart', () => {
         expect(testFunc).toBeCalledTimes(1);
     })
 
-    test('getRadarChartOptions option legend', () => {
+    test('getRadarChartOptions option legend data', () => {
         const option: any = getRadarChartOptions(categoryColumn, yAxisColumnList);
-        const expectedLegend: any = {
-            data: yAxisColumnList.map((column: Column) => column.title)
-        }
-        expect(option.legend).toEqual(expectedLegend);
+        const expected: string[] = yAxisColumnList.map(column => column.title);
+        expect(option.legend.data).toEqual(expected);
+    })
+
+    test('getRadarChartOptions option radar indicator', () => {
+        const option: any = getRadarChartOptions(categoryColumn, yAxisColumnList);
+        const expected: any[] = [
+            { name: categoryColumn.valueList[0], max: yAxisColumnList[1].valueList[0] },
+            { name: categoryColumn.valueList[1], max: yAxisColumnList[1].valueList[1] },
+            { name: categoryColumn.valueList[2], max: yAxisColumnList[1].valueList[2] },
+        ];
+        expect(option.radar.indicator).toEqual(expected);
+    })
+
+    test('getRadarChartOptions option series data', () => {
+        const option: any = getRadarChartOptions(categoryColumn, yAxisColumnList);
+        const expected: any[] = [
+            {
+                value: [1, 1, 1],
+                name: yAxisColumnList[0].title
+            }, {
+                value: [10, 15, 30],
+                name: yAxisColumnList[1].title
+            }, {
+                value: [1, 1, 1],
+                name: yAxisColumnList[2].title
+            }
+        ];
+        expect(option.series.data).toEqual(expected);
     })
 })

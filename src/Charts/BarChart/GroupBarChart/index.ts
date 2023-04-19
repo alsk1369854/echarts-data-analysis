@@ -1,5 +1,5 @@
-import { createAnalysisColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListMedian, getListStandardDeviation, getListVariance, getMinColumnLength, swapXAxisAndYAxis } from "../../../Utils";
-import { AnalysisColumnValueType, CalculateTypeViewText, NumberCalculateType, StringCalculateType } from "../../../Utils/BasicEnum";
+import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue, swapXAxisAndYAxis } from "../../../Utils";
+import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { AnalysisColumn, Column, EChartsOption } from './../../../interfaces';
 
 const DEFAULT_ECHART_OPTIONS: EChartsOption = {
@@ -48,7 +48,7 @@ const DEFAULT_ECHART_OPTIONS: EChartsOption = {
         {
             name: 'Direct',
             type: 'bar',
-            stack: 'total',
+            // stack: 'total', // stacked bar option
             label: {
                 show: true
             },
@@ -57,149 +57,33 @@ const DEFAULT_ECHART_OPTIONS: EChartsOption = {
             },
             data: [320, 302, 301, 334, 390, 330, 320]
         },
-        {
-            name: 'Mail Ad',
-            type: 'bar',
-            stack: 'total',
-            label: {
-                show: true
-            },
-            emphasis: {
-                focus: 'series'
-            },
-            data: [120, 132, 101, 134, 90, 230, 210]
-        },
     ]
 };
 
-
-const getSeriesByStringValueColumn = (
-    xAxisCorrespondsYAxisMap: Map<string, Map<string, (string[] | number[])>>,
-    yAxisColumn: AnalysisColumn
-): {} => {
+const getSeriesItem = (
+    xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap: Map<string, Map<string, (string | number | null)[]>>,
+    yAxisColumn: AnalysisColumn<number | string | null>
+): any => {
     let {
         title: yAxisTitle,
         calculateType: yAxisCalculateType,
     } = yAxisColumn;
 
     let seriesData: any[] = [];
-    switch (yAxisCalculateType) {
-        case StringCalculateType.countDifferent:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as string[];
-                const countDifferent = new Set(yAxisValueList).size;
-                seriesData.push(countDifferent);
-            })
-            break;
-        case StringCalculateType.count:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as string[];
-                const count = yAxisValueList.length;
-                seriesData.push(count);
-            })
-            break;
-    }
+    xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
+        const correspondsYAxisValueList = yAxisValueListMap.get(yAxisTitle);
+        let generalYAxisValueList: (string | number)[] = [];
+        let value = 0;
+        if (correspondsYAxisValueList) {
+            generalYAxisValueList = filterOutListEmptyValues(correspondsYAxisValueList) as (string | number)[];
+            value = getValueListCalculateValue(generalYAxisValueList, yAxisCalculateType);
+        }
+        seriesData.push(value);
+    })
 
     return {
         name: yAxisTitle,
         type: 'bar',
-        barGap: 0,
-        // stack: 'total',
-        label: {
-            show: true
-        },
-        emphasis: {
-            focus: 'series'
-        },
-        data: seriesData
-    }
-}
-
-const getSeriesByNumberValueColumn = (
-    xAxisCorrespondsYAxisMap: Map<string, Map<string, (string[] | number[])>>,
-    yAxisColumn: AnalysisColumn
-): {} => {
-    let {
-        title: yAxisTitle,
-        calculateType: yAxisCalculateType,
-    } = yAxisColumn;
-
-    let seriesData: any[] = [];
-    switch (yAxisCalculateType) {
-        case NumberCalculateType.sum:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                const sum = yAxisValueList.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-                seriesData.push(sum);
-            })
-            break;
-        case NumberCalculateType.average:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                const sum = yAxisValueList.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
-                const count = yAxisValueList.length;
-                seriesData.push((sum / count).toFixed(2));
-            })
-            break;
-        case NumberCalculateType.min:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                // const min = Math.min(...yAxisValueList);
-                let min = (yAxisValueList.length > 0) ? Number.MAX_VALUE : 0;
-                yAxisValueList.forEach(value => { min = Math.min(value, min) });
-                seriesData.push(min);
-            })
-            break;
-        case NumberCalculateType.max:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                // const max = Math.max(...yAxisValueList);
-                let max = (yAxisValueList.length > 0) ? Number.MIN_VALUE : 0;
-                yAxisValueList.forEach(value => { max = Math.max(value, max) });
-                seriesData.push(max);
-            })
-            break;
-        case NumberCalculateType.countDifferent:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                const countDifferent = new Set(yAxisValueList).size;
-                seriesData.push(countDifferent);
-            })
-            break;
-        case NumberCalculateType.count:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                const count = yAxisValueList.length;
-                seriesData.push(count);
-            })
-            break;
-        case NumberCalculateType.standardDeviation:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                const standardDeviation = getListStandardDeviation(yAxisValueList);
-                seriesData.push(standardDeviation.toFixed(2));
-            })
-            break;
-        case NumberCalculateType.variance:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                const variance = getListVariance(yAxisValueList);
-                seriesData.push(variance.toFixed(2));
-            })
-            break;
-        case NumberCalculateType.median:
-            xAxisCorrespondsYAxisMap.forEach((yAxisValueListMap, xAxisValueCategory) => {
-                let yAxisValueList = yAxisValueListMap.get(yAxisTitle) as number[];
-                const median = getListMedian(yAxisValueList);
-                seriesData.push(median);
-            })
-            break;
-    }
-
-    return {
-        name: yAxisTitle,
-        type: 'bar',
-        stack: 'total',
         label: {
             show: true
         },
@@ -212,45 +96,32 @@ const getSeriesByNumberValueColumn = (
 
 
 export const getGroupBarChartOptions = (
-    xAxisColumn: Column,
-    yAxisColumnList: Column[],
+    xAxisColumn: Column<string | number | null>,
+    yAxisColumnList: Column<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init return value
     let eChartsOption: EChartsOption = { ...DEFAULT_ECHART_OPTIONS };
 
     // create analysis column
-    const xAxisAnalysisColumn: AnalysisColumn = createAnalysisColumn(xAxisColumn);
-    const yAxisAnalysisColumnList: AnalysisColumn[] = yAxisColumnList.map(column => {
+    const xAxisAnalysisColumn: Column<string> = createCategoryColumn(xAxisColumn);
+    const yAxisAnalysisColumnList: AnalysisColumn<string | number | null>[] = yAxisColumnList.map(column => {
         return createAnalysisColumn(column);
     })
-    const { title: xAxisValueCategory } = xAxisAnalysisColumn;
 
     // create x axis category corresponds y axis value list map
     const xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap =
         getColumnValueCategoryCorrespondsOtherColumnValueListMap(xAxisAnalysisColumn, yAxisAnalysisColumnList);
 
 
-    // update title
+    // update title text
     let newTitle = {
-        text: "",
+        ...eChartsOption.title,
+        text: getChartOptionTitleText(yAxisAnalysisColumnList, [xAxisAnalysisColumn]),
     }
-    yAxisAnalysisColumnList.forEach((yAxisColumn, index) => {
-        let {
-            title: yAxisTitle,
-            calculateType: yAxisCalculateType,
-        } = yAxisColumn;
-        const calculateViewText = CalculateTypeViewText[yAxisCalculateType];
-        newTitle.text = newTitle.text + `${yAxisTitle} 的${calculateViewText}`
-        if (index !== yAxisAnalysisColumnList.length - 1) {
-            newTitle.text = newTitle.text + " 與 ";
-        }
-    })
-    newTitle.text = newTitle.text + ` 依據 ${xAxisValueCategory}`;
     eChartsOption.title = newTitle;
 
-
-    // update xAxis
+    // update xAxis data
     let newXAxis: any = {
         ...eChartsOption.xAxis,
         data: []
@@ -260,20 +131,10 @@ export const getGroupBarChartOptions = (
     });
     eChartsOption.xAxis = newXAxis;
 
-
     // update series
     let newSeries: any[] = [];
     yAxisAnalysisColumnList.forEach(yAxisColumn => {
-        const { valueType: yAxisValueType } = yAxisColumn;
-        let seriesItem = {};
-        switch (yAxisValueType) {
-            case AnalysisColumnValueType.number:
-                seriesItem = getSeriesByNumberValueColumn(xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap, yAxisColumn);
-                break;
-            case AnalysisColumnValueType.string:
-            default:
-                seriesItem = getSeriesByStringValueColumn(xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap, yAxisColumn);
-        }
+        const seriesItem = getSeriesItem(xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap, yAxisColumn);;
         newSeries.push(seriesItem);
     })
     eChartsOption.series = newSeries;
@@ -284,8 +145,8 @@ export const getGroupBarChartOptions = (
 
 
 export const getGroupHorizontalBarChart = (
-    yAxisColumn: Column,
-    xAxisColumnList: Column[],
+    yAxisColumn: Column<string | number | null>,
+    xAxisColumnList: Column<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getGroupBarChartOptions(yAxisColumn, xAxisColumnList);
