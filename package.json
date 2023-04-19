@@ -13,6 +13,7 @@
   "scripts": {
     "test": "jest --coverage",
     "test:watch": "jest --coverage --watchAll",
+    "build:removeDist": "rmdir /s /q dist",
     "build:compile": "npx babel src --extensions .ts --out-dir dist --source-maps",
     "build:types": "tsc --project tsconfig.build.json",
     "build:min": "browserify dist/index.js -o dist/index.min.js",

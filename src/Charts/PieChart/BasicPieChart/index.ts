@@ -77,6 +77,7 @@ export const getBasicPieChartOptions = (
             newSeries.data.push({ value: value, name: categoryValue });
         }
     })
+    eChartsOption.series = newSeries;
 
     if (callbackFunc) callbackFunc(eChartsOption);
     return eChartsOption;

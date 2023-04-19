@@ -1,7 +1,7 @@
 // import ECharts library
 import { EChartsOption, init, EChartsType } from 'echarts'
 // import echarts-data-analysis library
-import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions, getGroupHorizontalBarChart } from '../../dist'
+import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions, getGroupHorizontalBarChart, getBasicPieChartOptions } from '../../dist'
 
 
 // basic preparation DOM initialization ECharts
@@ -38,8 +38,8 @@ const yAxisColumnList: Column<string | number>[] = [
 // get ECharts stacked bar chart options according to columns
 // 根據列數據獲取 ECharts 堆積條形圖配置項
 // getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option: EChartsOption) => {
-    getGroupHorizontalBarChart(xAxisColumn, yAxisColumnList, (option: EChartsOption) => {
-        console.log(option)
+getBasicPieChartOptions(xAxisColumn, yAxisColumnList[1], (option: EChartsOption) => {
+    console.log(option)
     // set options for ECharts DOM
     // 為 ECharts DOM 設置配置項
     myChart.setOption(option);
