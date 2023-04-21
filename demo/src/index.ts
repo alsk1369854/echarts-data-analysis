@@ -1,7 +1,7 @@
 // import ECharts library
 import { EChartsOption, init, EChartsType } from 'echarts'
 // import echarts-data-analysis library
-import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions, getGroupHorizontalBarChart, getBasicPieChartOptions } from '../../dist'
+import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions, getGroupHorizontalBarChart, getBasicPieChartOptions, createAnalysisColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap } from '../../dist'
 
 
 // basic preparation DOM initialization ECharts
@@ -10,10 +10,10 @@ let myChart: EChartsType = init(document.getElementById('main') as HTMLElement);
 
 // chart analysis dataset
 // 圖表分析資料集
-const myDataset: {} = {
-    設備名稱: ["device_1", "device_2", "device_3"],
-    設備狀態: ["OK", "WARN", "NG"],
-    設備數值: [10, 15, 30]
+const myDataset: any = {
+    設備名稱: ["Device 01", "Device 02", "Device 03", "Device 04"],
+    設備狀態: ["OK", "NG", "WARN", "OK"],
+    設備數值: [10, 30, 15, 9]
 }
 
 // create column object
@@ -22,7 +22,7 @@ const xAxisColumn: Column<string> = {
     title: "設備名稱",
     valueList: myDataset["設備名稱"]
 }
-const yAxisColumnList: Column<string | number>[] = [
+const yAxisColumnList: Column<any>[] = [
     {
         title: "設備狀態",
         valueList: myDataset["設備狀態"],
@@ -34,6 +34,18 @@ const yAxisColumnList: Column<string | number>[] = [
         calculateType: NumberCalculateType.average,
     }
 ]
+
+const yAxisAnalysisColumn = yAxisColumnList.map(column => createAnalysisColumn(column));
+
+const map = getColumnValueCategoryCorrespondsOtherColumnValueListMap(xAxisColumn, yAxisAnalysisColumn);
+console.log("" + map);
+console.log(map.toString());
+
+describe("", () => {
+    test("", () => {
+        expect(map).toBe("");
+    })
+})
 
 // get ECharts stacked bar chart options according to columns
 // 根據列數據獲取 ECharts 堆積條形圖配置項

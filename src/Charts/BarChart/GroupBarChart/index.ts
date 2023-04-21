@@ -109,17 +109,16 @@ export const getGroupBarChartOptions = (
         return createAnalysisColumn(column);
     })
 
-    // create x axis category corresponds y axis value list map
-    const xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap =
-        getColumnValueCategoryCorrespondsOtherColumnValueListMap(xAxisAnalysisColumn, yAxisAnalysisColumnList);
-
-
     // update title text
     let newTitle = {
         ...eChartsOption.title,
         text: getChartOptionTitleText(yAxisAnalysisColumnList, [xAxisAnalysisColumn]),
     }
     eChartsOption.title = newTitle;
+
+    // create x axis category corresponds y axis value list map
+    const xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap =
+        getColumnValueCategoryCorrespondsOtherColumnValueListMap(xAxisAnalysisColumn, yAxisAnalysisColumnList);
 
     // update xAxis data
     let newXAxis: any = {

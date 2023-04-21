@@ -117,18 +117,34 @@ export const columnListToRowList = (columnsValueList: any): {}[] => {
     return result;
 }
 
-export const getColumnValueCategoryCorrespondsOtherColumnValueListMap = (
+/**
+ * @param mainColumn 設備名稱 column
+ * @param otherColumnList mainColumn 值列別，對應的 column 類別
+ * 
+ * @returns
+ * Map {
+ *    "Device 01" => Map {
+ *        "設備狀態" => Array ["OK","OK",],
+ *        "設備數值" => Array [10,9,],
+ *    },
+ *    "Device 02" => Map {
+ *        "設備狀態" => Array ["NG","WARN",],
+ *        "設備數值" => Array [30,15,],
+ *    },
+ * } 
+ */
+export const getColumnValueCategoryCorrespondsOtherColumnValueListMap = <T extends string | number | null>(
     mainColumn: Column<string | number | null>,
-    otherColumnList: Column<string | number | null>[]
-): Map<string, Map<string, (string | number | null)[]>> => {
-    let resultMap: Map<string, Map<string, (string | number | null)[]>> = new Map();
+    otherColumnList: Column<T>[]
+): Map<string, Map<string, T[]>> => {
+    let resultMap: Map<string, Map<string, T[]>> = new Map();
 
     // redefine main column value type to string[] 
     // rename main column null values to "(Blank)"
     const mainColumnValueList = createCategoryColumn(mainColumn).valueList;
 
     // find max column length
-    const totalColumnList = otherColumnList.concat(mainColumn);
+    const totalColumnList = [...otherColumnList, mainColumn];
     const minColumnLength = getMinColumnLength(totalColumnList);
 
     // build map
@@ -136,7 +152,7 @@ export const getColumnValueCategoryCorrespondsOtherColumnValueListMap = (
     const mainColumnValueSet: Set<string> = new Set(mainColumnValueList);
     // init map space
     mainColumnValueSet.forEach(valueCategory => {
-        let otherColumnMap: Map<string, any[]> = new Map();
+        let otherColumnMap: Map<string, T[]> = new Map();
         otherColumnList.forEach(column => {
             const { title } = column;
             otherColumnMap.set(title, []);
@@ -146,16 +162,18 @@ export const getColumnValueCategoryCorrespondsOtherColumnValueListMap = (
     // insert map values
     for (let i = 0; i < minColumnLength; i++) {
         const categoryValue: string = mainColumnValueList[i];
-        if (resultMap.has(categoryValue)) {
-            let otherColumnMap: Map<string, any[]> = resultMap.get(categoryValue) as Map<string, any[]>;
+        const categoryColumnMap = resultMap.get(categoryValue);
+        if (categoryColumnMap) {
             otherColumnList.forEach((column) => {
                 const { title, valueList } = column;
                 const yAxisValue = valueList[i];
-                otherColumnMap.get(title)!.push(yAxisValue);
+                const otherColumnMap = categoryColumnMap.get(title);
+                if (otherColumnMap) {
+                    otherColumnMap.push(yAxisValue)
+                }
             })
         }
     }
-
     return resultMap;
 }
 

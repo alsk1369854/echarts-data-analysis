@@ -1,7 +1,7 @@
-import { CalculateTypeViewText, createAnalysisColumn, createCategoryColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap } from "../../../Utils";
+import { CalculateTypeViewText, createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
-import { SeriesDataItem } from "./interfaces";
+import { RadarIndicatorItem, SeriesDataItem } from "./interfaces";
 
 export const DEFAULT_RADAR_CHART_OPTIONS = {
     title: {
@@ -59,38 +59,72 @@ export const getRadarChartOptions = (
         return createAnalysisColumn(column);
     })
 
+    // create categroy corresponds y-axis column values map
+    const categoryCorrespondsYAxisColumnValuesMap = getColumnValueCategoryCorrespondsOtherColumnValueListMap(categoryAnalysisColumn, yAxisAnalysisColumnList);
+
     // update title text
-    let newTitle: any = {
+    const newTitle: any = {
         ...eChartsOption.title,
         text: getChartOptionTitleText(yAxisAnalysisColumnList, [categoryAnalysisColumn])
     }
     eChartsOption.title = newTitle;
 
     // update legend data
-    let newLegend: any = {
+    const newLegend: any = {
         ...eChartsOption.legend,
         data: yAxisAnalysisColumnList.map((column) => column.title)
     }
     eChartsOption.legend = newLegend;
 
-    // update series data
-    let newSeries: any = {
-        ...eChartsOption.series,
-        data: []
+    // update radar indicator
+    let newRadar: any = {
+        ...eChartsOption.radar,
+        indicator: []
     }
-    const categoryCorrespondsYAxisColumnValuesMap: Map<string, Map<string, any[]>> =
-        getColumnValueCategoryCorrespondsOtherColumnValueListMap(categoryAnalysisColumn, yAxisAnalysisColumnList);
-    categoryCorrespondsYAxisColumnValuesMap.forEach((yAxisColumnValuesMap: Map<string, any[]>, categoryValue: string) => {
-        let seriesDataItem: SeriesDataItem = {
-            value: [],
-            name: categoryValue
-        }
-        yAxisAnalysisColumnList.forEach((column) => {
-
-        })
+    let categoryMaximumValueMap: Map<string, number> = new Map();
+    categoryCorrespondsYAxisColumnValuesMap.forEach((yAxisColumnValuesMap, categoryValue) => {
+        categoryMaximumValueMap.set(categoryValue, Number.MIN_VALUE);
     })
 
+    // update series data
+    const newSeries: any = {
+        ...eChartsOption.series,
+        data: yAxisAnalysisColumnList.map(column => {
+            const { title: yAxisTitle, calculateType: yAxisCalculateType } = column;
+            let seriesDataItem: SeriesDataItem = {
+                value: [],
+                name: yAxisTitle
+            }
+            categoryCorrespondsYAxisColumnValuesMap.forEach((yAxisColumnValuesMap, categoryValue) => {
+                const categoryCorrespondsYAxisColumnValues = yAxisColumnValuesMap.get(yAxisTitle);
+                if (categoryCorrespondsYAxisColumnValues) {
+                    const generalCategoryCorrespondsYAxisColumnValues = filterOutListEmptyValues(categoryCorrespondsYAxisColumnValues) as (string | number)[];
+                    const value = getValueListCalculateValue(generalCategoryCorrespondsYAxisColumnValues, yAxisCalculateType);
+                    seriesDataItem.value.push(value);
+
+                    // update category maximum value
+                    let categoryMaximumValue = categoryMaximumValueMap.get(categoryValue);
+                    if (categoryMaximumValue) {
+                        categoryMaximumValue = Math.max(categoryMaximumValue, value);
+                    } else {
+                        categoryMaximumValue = value;
+                    }
+                    categoryMaximumValueMap.set(categoryValue, categoryMaximumValue);
+                }
+            })
+            return seriesDataItem;
+        })
+    }
     eChartsOption.series = newSeries;
+
+
+    categoryMaximumValueMap.forEach((categoryMaxiMumValue, category) => {
+        newRadar.indicator.push({
+            name: category,
+            max: (categoryMaxiMumValue > 0) ? categoryMaxiMumValue : 0
+        } as RadarIndicatorItem);
+    })
+    eChartsOption.radar = newRadar;
 
 
     if (callbackFunc) callbackFunc(eChartsOption);
