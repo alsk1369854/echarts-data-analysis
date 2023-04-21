@@ -1,7 +1,7 @@
 // import ECharts library
 import { EChartsOption, init, EChartsType } from 'echarts'
 // import echarts-data-analysis library
-import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions, getGroupHorizontalBarChart, getBasicPieChartOptions, createAnalysisColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap } from '../../dist'
+import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions, getGroupHorizontalBarChart, getBasicPieChartOptions, createAnalysisColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getRadarChartOptions } from '../../dist'
 
 
 // basic preparation DOM initialization ECharts
@@ -35,25 +35,19 @@ const yAxisColumnList: Column<any>[] = [
     }
 ]
 
-const yAxisAnalysisColumn = yAxisColumnList.map(column => createAnalysisColumn(column));
-
-const map = getColumnValueCategoryCorrespondsOtherColumnValueListMap(xAxisColumn, yAxisAnalysisColumn);
-console.log("" + map);
-console.log(map.toString());
-
-describe("", () => {
-    test("", () => {
-        expect(map).toBe("");
-    })
-})
 
 // get ECharts stacked bar chart options according to columns
 // 根據列數據獲取 ECharts 堆積條形圖配置項
 // getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option: EChartsOption) => {
-getBasicPieChartOptions(xAxisColumn, yAxisColumnList[1], (option: EChartsOption) => {
+// getBasicPieChartOptions(xAxisColumn, yAxisColumnList[1], (option: EChartsOption) => {
+//     console.log(option)
+//     // set options for ECharts DOM
+//     // 為 ECharts DOM 設置配置項
+//     myChart.setOption(option);
+// })
+
+getRadarChartOptions(xAxisColumn, yAxisColumnList, (option)=>{
     console.log(option)
-    // set options for ECharts DOM
-    // 為 ECharts DOM 設置配置項
     myChart.setOption(option);
 })
 

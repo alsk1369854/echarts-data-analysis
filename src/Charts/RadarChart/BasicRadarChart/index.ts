@@ -12,6 +12,7 @@ export const DEFAULT_RADAR_CHART_OPTIONS = {
         position: "right"
     },
     legend: {
+        top:30,
         data: ['Allocated Budget', 'Actual Spending']
     },
     radar: {
@@ -24,25 +25,24 @@ export const DEFAULT_RADAR_CHART_OPTIONS = {
             { name: 'Marketing', max: 25000 }
         ]
     },
-    series: [
-        {
-            type: 'radar',
-            symbol: 'none',
-            emphasis: {
-                focus: "self",
+    series:{
+        type: 'radar',
+        symbol: 'none',
+        emphasis: {
+            focus: "self",
+        },
+        data: [
+            {
+                value: [4200, 3000, 20000, 35000, 50000, 18000],
+                name: 'Allocated Budget'
             },
-            data: [
-                {
-                    value: [4200, 3000, 20000, 35000, 50000, 18000],
-                    name: 'Allocated Budget'
-                },
-                {
-                    value: [5000, 14000, 28000, 26000, 42000, 21000],
-                    name: 'Actual Spending'
-                }
-            ]
-        }
-    ]
+            {
+                value: [5000, 14000, 28000, 26000, 42000, 21000],
+                name: 'Actual Spending'
+            }
+        ]
+    }
+
 };
 
 export const getRadarChartOptions = (
