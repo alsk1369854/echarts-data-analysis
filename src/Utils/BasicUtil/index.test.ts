@@ -1,6 +1,6 @@
 import { AnalysisColumn, Column, EChartsOption } from '../../interfaces';
 import { AnalysisColumnValueType, NumberCalculateType, StringCalculateType } from '../BasicEnum';
-import { isNumberValue, getColumnValueListType, createAnalysisColumn, getMinColumnLength, columnListToRowList, swapXAxisAndYAxis, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListStandardDeviation, getListMedian, getListVariance, createCategoryColumn } from './index'
+import { isNumberValue, getColumnValueListType, createAnalysisColumn, getMinColumnLength, columnListToRowList, swapXAxisAndYAxis, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListStandardDeviation, getListMedian, getListVariance, createCategoryColumn, getValueListCalculateValue } from './index'
 
 describe('BasicUtil', () => {
     // isNumberValue()
@@ -324,6 +324,156 @@ describe('BasicUtil', () => {
         1.41 = sqrt(2, 2);
         */
         expect(result.toFixed(2)).toBe("1.41");
+    })
+
+    // getValueListCalculateValue()
+    test("getValueListCalculateValue StringCalculateType.count 1", () => {
+        const valueList: string[] = [];
+        const calculateType = StringCalculateType.count;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue StringCalculateType.count 2", () => {
+        const valueList: string[] = ["1", "2", "3"];
+        const calculateType = StringCalculateType.count;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(3);
+    })
+
+    test("getValueListCalculateValue StringCalculateType.countDifferent 1", () => {
+        const valueList: string[] = [];
+        const calculateType = StringCalculateType.countDifferent;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue StringCalculateType.countDifferent 2", () => {
+        const valueList: string[] = ["1", "2", "3", "2"];
+        const calculateType = StringCalculateType.countDifferent;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(3);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.count 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.count;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.count 2", () => {
+        const valueList: number[] = [1, 2, 3];
+        const calculateType = NumberCalculateType.count;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(3);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.countDifferent 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.countDifferent;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.countDifferent 2", () => {
+        const valueList: number[] = [1, 2, 3, 3];
+        const calculateType = NumberCalculateType.countDifferent;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(3);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.sum 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.sum;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.sum 2", () => {
+        const valueList: number[] = [1, 2, 3, 3];
+        const calculateType = NumberCalculateType.sum;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(9);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.average 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.average;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.average 2", () => {
+        const valueList: number[] = [1, 2, 3, 3];
+        const calculateType = NumberCalculateType.average;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(2.25);
+    })
+    test("getValueListCalculateValue NumberCalculateType.average 3", () => {
+        const valueList: number[] = [1.5, 3.2, 6.3];
+        const calculateType = NumberCalculateType.average;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(3.67);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.min 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.min;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.min 2", () => {
+        const valueList: number[] = [5, 1, 2, 3, 3];
+        const calculateType = NumberCalculateType.min;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(1);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.max 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.max;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.max 2", () => {
+        const valueList: number[] = [5, 1, 2, 5, 3];
+        const calculateType = NumberCalculateType.max;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(5);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.standardDeviation 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.standardDeviation;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.standardDeviation 2", () => {
+        const valueList: number[] = [1, 2, 3];
+        const calculateType = NumberCalculateType.standardDeviation;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(1.41);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.variance 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.variance;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.variance 2", () => {
+        const valueList: number[] = [1, 2, 3];
+        const calculateType = NumberCalculateType.variance;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(2);
+    })
+
+    test("getValueListCalculateValue NumberCalculateType.median 1", () => {
+        const valueList: number[] = [];
+        const calculateType = NumberCalculateType.median;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(0);
+    })
+    test("getValueListCalculateValue NumberCalculateType.median 2", () => {
+        const valueList: number[] = [1, 2, 3];
+        const calculateType = NumberCalculateType.median;
+        const result = getValueListCalculateValue(valueList, calculateType);
+        expect(result).toBe(2);
     })
 
 })

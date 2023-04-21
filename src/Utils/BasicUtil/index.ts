@@ -226,9 +226,13 @@ export const getValueListCalculateValue = <T extends string | number>(
             result = (valueList as number[]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
             break;
         case NumberCalculateType.average:
-            const sum = (valueList as number[]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
             const count = valueList.length;
-            result = + (sum / count).toFixed(2);
+            if(count !== 0){
+                const sum = (valueList as number[]).reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+                result = + (sum / count).toFixed(2);
+            }else{
+                result = 0;
+            }
             break;
         case NumberCalculateType.min:
             const min = Math.min(...(valueList as number[]));
