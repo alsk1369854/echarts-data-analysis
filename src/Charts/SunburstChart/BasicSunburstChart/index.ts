@@ -2,7 +2,7 @@ import { AnalysisColumn, AnalysisColumnValueType, CalculateTypeViewText, Column,
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { ColumnRelationTreeNode, SunburstDataItem } from "./interfaces";
 
-const DEFAULT_ECHARTS_OPTIONS: EChartsOption = {
+const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "圖表",
     },
@@ -123,12 +123,10 @@ export const getBasicSunburstChartOptions = (
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init result value
-    let eChartsOption = { ...DEFAULT_ECHARTS_OPTIONS };
+    let eChartsOption = { ...DEFAULT_ECHARTS_OPTION };
 
     // create analysis column
-    const categoryAnalysisColumnList = categoryColumnList.map(column => {
-        return createCategoryColumn(column);
-    })
+    const categoryAnalysisColumnList = categoryColumnList.map(column => createCategoryColumn(column));
     const measureAnalysisColumn = createAnalysisColumn(measureColumn);
 
     // update title text

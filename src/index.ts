@@ -1,3 +1,4 @@
 export * from './interfaces'
 export * from './Utils';
-export * from './Charts';
+import * as EChartsDataAnalysis from './Charts';
+export {EChartsDataAnalysis}

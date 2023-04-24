@@ -11,6 +11,7 @@ export enum ChartType {
     donut = "donut",
     sunburst = "sunburst",
     radar = "radar",
+    treeMap = "treeMap",
 }
 
 export enum AnalysisColumnValueType {

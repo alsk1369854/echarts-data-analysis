@@ -4,7 +4,7 @@ import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, g
 import { AnalysisColumn, Column, EChartsOption } from '../../../interfaces';
 import { getChartOptionTitleText } from '../../../Utils/ChartUtil';
 
-const DEFAULT_ECHART_OPTIONS: EChartsOption = {
+const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "圖表",
     },
@@ -48,7 +48,7 @@ export const getBasicPieChartOptions = (
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init result value
-    let eChartsOption: EChartsOption = { ...DEFAULT_ECHART_OPTIONS };
+    let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION };
 
     // create analysis column
     const generalCategoryColumn = createCategoryColumn(categoryColumn);

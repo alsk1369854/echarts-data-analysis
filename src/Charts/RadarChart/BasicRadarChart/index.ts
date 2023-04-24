@@ -3,7 +3,7 @@ import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { Column, EChartsOption } from "../../../interfaces";
 import { RadarIndicatorItem } from "./interfaces";
 
-export const DEFAULT_RADAR_CHART_OPTIONS = {
+export const DEFAULT_ECHARTS_OPTION = {
     title: {
         text: 'Basic Radar Chart'
     },
@@ -58,7 +58,7 @@ export const getRadarChartOptions = (
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init return value
-    let eChartsOption: EChartsOption = { ...DEFAULT_RADAR_CHART_OPTIONS } as EChartsOption;
+    let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION } as EChartsOption;
 
     // create analysis column
     const categoryAnalysisColumn = createCategoryColumn(categoryColumn);

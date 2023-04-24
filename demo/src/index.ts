@@ -1,7 +1,7 @@
 // import ECharts library
 import { EChartsOption, init, EChartsType } from 'echarts'
 // import echarts-data-analysis library
-import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions, getGroupHorizontalBarChart, getBasicPieChartOptions, createAnalysisColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getRadarChartOptions } from '../../dist'
+import { Column, NumberCalculateType, StringCalculateType, EChartsDataAnalysis } from '../../dist'
 
 
 // basic preparation DOM initialization ECharts
@@ -46,9 +46,20 @@ const yAxisColumnList: Column<any>[] = [
 //     myChart.setOption(option);
 // })
 
-getRadarChartOptions(xAxisColumn, yAxisColumnList, (option)=>{
+// EChartsDataAnalysis.getRadarChartOptions(xAxisColumn, yAxisColumnList, (option)=>{
+//     console.log(option)
+//     myChart.setOption(option);
+// })
+
+EChartsDataAnalysis.getDonutChartOptions(xAxisColumn, yAxisColumnList[0], (option) => {
     console.log(option)
     myChart.setOption(option);
 })
+
+// EChartsDataAnalysis.getBasicTreeMapChartOptions(xAxisColumn, yAxisColumnList, (option) => {
+//     console.log(option)
+//     myChart.setOption(option);
+// })
+
 
 

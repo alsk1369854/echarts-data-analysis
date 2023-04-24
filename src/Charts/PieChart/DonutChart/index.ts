@@ -1,4 +1,5 @@
-import { Column, EChartsOption, getBasicPieChartOptions } from "../../..";
+import { Column, EChartsOption } from "../../..";
+import { getBasicPieChartOptions } from "../BasicPieChart";
 
 export const getDonutChartOptions = (
     categoryColumn: Column<string | number | null>,

@@ -2,7 +2,7 @@ import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, g
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { AnalysisColumn, Column, EChartsOption } from './../../../interfaces';
 
-const DEFAULT_ECHART_OPTIONS: EChartsOption = {
+const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "圖表",
     },
@@ -101,7 +101,7 @@ export const getGroupBarChartOptions = (
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init return value
-    let eChartsOption: EChartsOption = { ...DEFAULT_ECHART_OPTIONS };
+    let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION };
 
     // create analysis column
     const xAxisAnalysisColumn: Column<string> = createCategoryColumn(xAxisColumn);
