@@ -1,7 +1,7 @@
-import { CalculateTypeViewText, createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
+import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
-import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
-import { RadarIndicatorItem, SeriesDataItem } from "./interfaces";
+import { Column, EChartsOption } from "../../../interfaces";
+import { RadarIndicatorItem } from "./interfaces";
 
 export const DEFAULT_RADAR_CHART_OPTIONS = {
     title: {
@@ -11,11 +11,16 @@ export const DEFAULT_RADAR_CHART_OPTIONS = {
         trigger: 'item',
         position: "right"
     },
+    grid: {
+        top: 60
+    },
     legend: {
-        top:30,
+        top: 30,
         data: ['Allocated Budget', 'Actual Spending']
     },
     radar: {
+        center: ['50%', '60%'], // chart position x-axis and y-axis
+        // radius: 80, // chart size
         indicator: [
             { name: 'Sales', max: 6500 },
             { name: 'Administration', max: 16000 },
@@ -25,11 +30,13 @@ export const DEFAULT_RADAR_CHART_OPTIONS = {
             { name: 'Marketing', max: 25000 }
         ]
     },
-    series:{
+    series: {
         type: 'radar',
-        symbol: 'none',
+        // symbol: 'none', // 點顯示
         emphasis: {
-            focus: "self",
+            lineStyle: {
+                width: 4
+            }
         },
         data: [
             {
@@ -91,7 +98,7 @@ export const getRadarChartOptions = (
         ...eChartsOption.series,
         data: yAxisAnalysisColumnList.map(column => {
             const { title: yAxisTitle, calculateType: yAxisCalculateType } = column;
-            let seriesDataItem: SeriesDataItem = {
+            let seriesDataItem: any = {
                 value: [],
                 name: yAxisTitle
             }
