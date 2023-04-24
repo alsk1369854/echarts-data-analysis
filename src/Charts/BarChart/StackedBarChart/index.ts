@@ -1,6 +1,5 @@
 import { Column, EChartsOption } from './../../../interfaces';
 import { getGroupBarChartOptions } from "../GroupBarChart";
-import { swapXAxisAndYAxis } from '../../../Utils';
 
 
 export const getStackedBarChartOptions = (
@@ -24,14 +23,3 @@ export const getStackedBarChartOptions = (
   return eChartsOption;
 }
 
-export const getStackedHorizontalBarChart = (
-  yAxisColumn: Column<string | number | null>,
-  xAxisColumnList: Column<string | number | null>[],
-  callbackFunc?: (eChartsOption: EChartsOption) => void
-): EChartsOption => {
-  let eChartsOption = getStackedBarChartOptions(yAxisColumn, xAxisColumnList);
-  swapXAxisAndYAxis(eChartsOption);
-
-  if (callbackFunc) callbackFunc(eChartsOption);
-  return eChartsOption;
-}

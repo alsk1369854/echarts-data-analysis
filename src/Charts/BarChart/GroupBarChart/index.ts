@@ -143,14 +143,3 @@ export const getGroupBarChartOptions = (
 }
 
 
-export const getGroupHorizontalBarChart = (
-    yAxisColumn: Column<string | number | null>,
-    xAxisColumnList: Column<string | number | null>[],
-    callbackFunc?: (eChartsOption: EChartsOption) => void
-): EChartsOption => {
-    let eChartsOption = getGroupBarChartOptions(yAxisColumn, xAxisColumnList);
-    swapXAxisAndYAxis(eChartsOption);
-
-    if (callbackFunc) callbackFunc(eChartsOption);
-    return eChartsOption;
-}

@@ -110,13 +110,12 @@ export const getRadarChartOptions = (
                     seriesDataItem.value.push(value);
 
                     // update category maximum value
-                    let categoryMaximumValue = categoryMaximumValueMap.get(categoryValue);
-                    if (categoryMaximumValue) {
-                        categoryMaximumValue = Math.max(categoryMaximumValue, value);
-                    } else {
-                        categoryMaximumValue = value;
+                    let newCategoryMaximumValue = value;
+                    const oldCategoryMaximumValue = categoryMaximumValueMap.get(categoryValue);
+                    if (oldCategoryMaximumValue) {
+                        newCategoryMaximumValue = Math.max(oldCategoryMaximumValue, value);
                     }
-                    categoryMaximumValueMap.set(categoryValue, categoryMaximumValue);
+                    categoryMaximumValueMap.set(categoryValue, newCategoryMaximumValue);
                 }
             })
             return seriesDataItem;
