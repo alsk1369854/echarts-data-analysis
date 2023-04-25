@@ -11,10 +11,18 @@ export const DEFAULT_ECHARTS_OPTION = {
         trigger: 'item',
         position: "right"
     },
+    toolbox: {
+        show: true,
+        top: 30,
+        feature: {
+            saveAsImage: { show: true }
+        }
+    },
     grid: {
         top: 60
     },
     legend: {
+        type: 'scroll',
         top: 30,
         data: ['Allocated Budget', 'Actual Spending']
     },

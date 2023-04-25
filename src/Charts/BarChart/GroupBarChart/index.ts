@@ -4,7 +4,7 @@ import { AnalysisColumn, Column, EChartsOption } from './../../../interfaces';
 
 const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
-        text: "圖表",
+        text: "Chart",
     },
     tooltip: {
         trigger: 'axis',
@@ -13,6 +13,7 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
         }
     },
     legend: {
+        type: 'scroll',
         top: 30,
     },
     grid: {

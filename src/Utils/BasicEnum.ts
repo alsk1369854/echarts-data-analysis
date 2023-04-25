@@ -1,17 +1,34 @@
 
 export enum ChartType {
+    // Bar charts
     stackedBar = "stackedBar",
     stackedHorizontalBar = "stackedHorizontalBar",
     groupBar = "groupBar",
     groupHorizontalBar = "groupHorizontalBar",
+    waterfall = "waterfall",
+
+    // Funnel charts
+    basicFunnel = "basicFunnel",
+
+    // Line charts
     stackedLine = "stackedLine",
     stackedAreaLine = "stackedAreaLine",
-    scatter = "scatter",
-    pie = "pie",
+
+    // Pie charts
+    basicPie = "basicPie",
     donut = "donut",
-    sunburst = "sunburst",
-    radar = "radar",
-    treeMap = "treeMap",
+
+    // Radar Charts
+    basicRadar = "basicRadar",
+
+    // Scatter charts
+    scatter = "scatter",
+
+    // Sunburst charts
+    basicSunburst = "basicSunburst",
+
+    // Tree map charts
+    basicTreeMap = "basicTreeMap",
 }
 
 export enum AnalysisColumnValueType {

@@ -62,4 +62,13 @@ EChartsDataAnalysis.getDonutChartOptions(xAxisColumn, yAxisColumnList[0], (optio
 // })
 
 
+// EChartsDataAnalysis.getWaterfallChartOptions(xAxisColumn, yAxisColumnList[1], (option) => {
+//     console.log(option)
+//     myChart.setOption(option);
+// })
 
+
+// EChartsDataAnalysis.getBasicFunnelChartOptions(xAxisColumn, yAxisColumnList[1], (option) => {
+//     console.log(option)
+//     myChart.setOption(option);
+// })

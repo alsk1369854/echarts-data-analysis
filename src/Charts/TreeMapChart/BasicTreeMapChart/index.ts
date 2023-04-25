@@ -3,7 +3,7 @@ import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, g
 import { Column, EChartsOption } from "../../../interfaces";
 import { getChartOptionTitleText } from '../../../Utils/ChartUtil';
 
-const DEFAULT_ECHARTS_OPTION = {
+const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "圖表",
     },
@@ -59,7 +59,7 @@ export const getBasicTreeMapChartOptions = (
     calculateColumnList: Column<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
-    let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION } as EChartsOption;
+    let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION };
 
     const generalCategoryColumn = createCategoryColumn(categoryColumn);
     const calculateAnalysisColumnList = calculateColumnList.map(column => createAnalysisColumn(column));

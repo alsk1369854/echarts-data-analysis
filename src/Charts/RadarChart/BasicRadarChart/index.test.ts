@@ -28,10 +28,18 @@ const yAxisColumnList: Column<string | number>[] = [
 ]
 
 describe('Basic Radar Chart', () => {
-    test('getRadarChartOptions callback function', () => {
+    test('getRadarChartOptions callback function 1', () => {
         const testFunc = jest.fn();
         getRadarChartOptions(categoryColumn, yAxisColumnList, testFunc);
         expect(testFunc).toBeCalledTimes(1);
+    })
+    test('getRadarChartOptions callback function 2', () => {
+        let resultFromCallback: any;
+
+        const resultFromReturn = getRadarChartOptions(categoryColumn, yAxisColumnList, (option)=>{
+            resultFromCallback = option;
+        });
+        expect(resultFromReturn).toEqual(resultFromCallback);
     })
 
     test('getRadarChartOptions option legend data', () => {

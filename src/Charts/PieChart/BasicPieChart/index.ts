@@ -20,9 +20,10 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
         formatter: '{b}<br/> 值: {c}<br/> 百分比: {d}%'
     },
     legend: {
-        top: 55,
-        orient: 'vertical', // 直向排列
-        left: 'right' // 靠右
+        type: 'scroll',
+        top: 30, // when right top value is : 55 
+        // orient: 'vertical', // 直向排列
+        // left: 'right' // 靠右
     },
     series: {
         type: 'pie',
