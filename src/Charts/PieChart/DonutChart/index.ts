@@ -8,7 +8,7 @@ export const getDonutChartOptions = (
 ): EChartsOption => {
     let eChartsOption = getBasicPieChartOptions(categoryColumn, valueColumn);
 
-    // update inside radius
+    // update series radius
     if (eChartsOption && eChartsOption.series) {
         eChartsOption.series = {
             ...eChartsOption.series,

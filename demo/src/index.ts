@@ -46,15 +46,27 @@ const yAxisColumnList: Column<any>[] = [
 //     myChart.setOption(option);
 // })
 
+// EChartsDataAnalysis.getGroupBarChartOptions(xAxisColumn, yAxisColumnList, (option) => {
+//     console.log(option)
+//     myChart.setOption(option);
+// })
+
+
+EChartsDataAnalysis.getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option) => {
+    console.log(option)
+    myChart.setOption(option);
+})
+
+
 // EChartsDataAnalysis.getRadarChartOptions(xAxisColumn, yAxisColumnList, (option)=>{
 //     console.log(option)
 //     myChart.setOption(option);
 // })
 
-EChartsDataAnalysis.getDonutChartOptions(xAxisColumn, yAxisColumnList[0], (option) => {
-    console.log(option)
-    myChart.setOption(option);
-})
+// EChartsDataAnalysis.getDonutChartOptions(xAxisColumn, yAxisColumnList[0], (option) => {
+//     console.log(option)
+//     myChart.setOption(option);
+// })
 
 // EChartsDataAnalysis.getBasicTreeMapChartOptions(xAxisColumn, yAxisColumnList, (option) => {
 //     console.log(option)

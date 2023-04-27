@@ -16,6 +16,7 @@ export const getBasicScatterChartOptions = (
         }
     }
 
+    // update series
     // remove line chart series line width
     if (eChartsOption && eChartsOption.series) {
         eChartsOption.series = eChartsOption.series as any[];

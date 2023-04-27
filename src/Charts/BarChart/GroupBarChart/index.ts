@@ -1,38 +1,19 @@
 import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue, swapXAxisAndYAxis } from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
+import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
 import { AnalysisColumn, Column, EChartsOption } from './../../../interfaces';
 
 const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "Chart",
     },
+    legend: DEFAULT_ECHARTES_OPTIONS_LEGEND,
+    grid: DEFAULT_ECHARTES_OPTIONS_GRID,
+    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
     tooltip: {
         trigger: 'axis',
         axisPointer: {
             type: 'shadow'
-        }
-    },
-    legend: {
-        type: 'scroll',
-        top: 30,
-    },
-    grid: {
-        left: '3%',
-        right: '4%',
-        bottom: '3%',
-        containLabel: true
-    },
-    toolbox: {
-        show: true,
-        //     orient: 'vertical',
-        //     left: 'right',
-        top: 30,
-        feature: {
-            //         mark: { show: true },
-            //         dataView: { show: true, readOnly: false },
-            //         magicType: { show: true, type: ['line', 'bar', 'stack'] },
-            //         restore: { show: true },
-            saveAsImage: { show: true }
         }
     },
     xAxis: {
@@ -85,6 +66,7 @@ const getSeriesItem = (
     return {
         name: yAxisTitle,
         type: 'bar',
+        barGap: 0,
         label: {
             show: true
         },
@@ -109,6 +91,9 @@ export const getGroupBarChartOptions = (
     const yAxisAnalysisColumnList: AnalysisColumn<string | number | null>[] = yAxisColumnList.map(column => {
         return createAnalysisColumn(column);
     })
+    // create x axis category corresponds y axis value list map
+    const xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap =
+        getColumnValueCategoryCorrespondsOtherColumnValueListMap(xAxisAnalysisColumn, yAxisAnalysisColumnList);
 
     // update title text
     let newTitle = {
@@ -116,10 +101,6 @@ export const getGroupBarChartOptions = (
         text: getChartOptionTitleText(yAxisAnalysisColumnList, [xAxisAnalysisColumn]),
     }
     eChartsOption.title = newTitle;
-
-    // create x axis category corresponds y axis value list map
-    const xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap =
-        getColumnValueCategoryCorrespondsOtherColumnValueListMap(xAxisAnalysisColumn, yAxisAnalysisColumnList);
 
     // update xAxis data
     let newXAxis: any = {

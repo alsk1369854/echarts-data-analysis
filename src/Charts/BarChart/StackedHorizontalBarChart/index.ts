@@ -2,7 +2,7 @@ import { swapXAxisAndYAxis } from "../../../Utils";
 import { Column, EChartsOption } from "../../../interfaces";
 import { getStackedBarChartOptions } from "../StackedBarChart";
 
-export const getStackedHorizontalBarChart = (
+export const getStackedHorizontalBarChartOptions = (
     yAxisColumn: Column<string | number | null>,
     xAxisColumnList: Column<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void

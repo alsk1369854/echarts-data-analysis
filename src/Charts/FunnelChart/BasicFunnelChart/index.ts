@@ -3,26 +3,18 @@ import { createAnalysisColumn, createCategoryColumn, getColumnValueCategoryCorre
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { Column, EChartsOption } from "../../../interfaces";
 import { SeriesDataItem } from './interfaces';
+import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from '../../../configs/ChartsOptionConfig';
 
 const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: 'Funnel'
     },
+    legend: DEFAULT_ECHARTES_OPTIONS_LEGEND,
+    grid: DEFAULT_ECHARTES_OPTIONS_GRID,
+    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
     tooltip: {
         trigger: 'item',
         formatter: '{b}<br/> 值: {c}<br/> 百分比: {d}%'
-    },
-    toolbox: {
-        show: true,
-        top: 30,
-        feature: {
-            saveAsImage: { show: true }
-        }
-    },
-    legend: {
-        type: 'scroll',
-        top: 30,
-        data: ['Show', 'Click', 'Visit', 'Inquiry', 'Order']
     },
     series: {
         name: 'Funnel',

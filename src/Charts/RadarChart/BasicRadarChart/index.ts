@@ -1,5 +1,6 @@
 import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
+import { DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
 import { Column, EChartsOption } from "../../../interfaces";
 import { RadarIndicatorItem } from "./interfaces";
 
@@ -7,24 +8,12 @@ export const DEFAULT_ECHARTS_OPTION = {
     title: {
         text: 'Basic Radar Chart'
     },
+    legend: DEFAULT_ECHARTES_OPTIONS_LEGEND,
+    grid: { top: 60 },
+    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
     tooltip: {
         trigger: 'item',
         position: "right"
-    },
-    toolbox: {
-        show: true,
-        top: 30,
-        feature: {
-            saveAsImage: { show: true }
-        }
-    },
-    grid: {
-        top: 60
-    },
-    legend: {
-        type: 'scroll',
-        top: 30,
-        data: ['Allocated Budget', 'Actual Spending']
     },
     radar: {
         center: ['50%', '60%'], // chart position x-axis and y-axis

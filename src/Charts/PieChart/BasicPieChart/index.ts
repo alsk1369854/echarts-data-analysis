@@ -3,27 +3,17 @@ import { AnalysisColumnValueType } from '../../..';
 import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListMedian, getListStandardDeviation, getListVariance, getValueListCalculateValue } from '../../../Utils';
 import { AnalysisColumn, Column, EChartsOption } from '../../../interfaces';
 import { getChartOptionTitleText } from '../../../Utils/ChartUtil';
+import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from '../../../configs/ChartsOptionConfig';
 
 const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "圖表",
     },
-    toolbox: {
-        show: true,
-        top: 30,
-        feature: {
-            saveAsImage: { show: true }
-        }
-    },
+    legend: DEFAULT_ECHARTES_OPTIONS_LEGEND,
+    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
     tooltip: {
         trigger: 'item',
         formatter: '{b}<br/> 值: {c}<br/> 百分比: {d}%'
-    },
-    legend: {
-        type: 'scroll',
-        top: 30, // when right top value is : 55 
-        // orient: 'vertical', // 直向排列
-        // left: 'right' // 靠右
     },
     series: {
         type: 'pie',

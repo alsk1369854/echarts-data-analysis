@@ -1,3 +1,4 @@
+import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
 import { Column, EChartsOption } from "../../../interfaces";
 import { getGroupBarChartOptions } from "../GroupBarChart";
 
@@ -5,13 +6,9 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: 'Chart',
     },
-    toolbox: {
-        show: true,
-        top: 30,
-        feature: {
-            saveAsImage: { show: true }
-        }
-    },
+    legend: { show: false },
+    grid: DEFAULT_ECHARTES_OPTIONS_GRID,
+    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
     tooltip: {
         trigger: 'axis',
         axisPointer: {
@@ -21,9 +18,6 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
             var tar = params[1];
             return tar.name + '<br/>' + "Value" + ' : ' + tar.value;
         }
-    },
-    legend: {
-        show: false
     },
     xAxis: {
         type: 'category',

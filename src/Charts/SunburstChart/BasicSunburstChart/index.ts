@@ -1,21 +1,16 @@
 import { AnalysisColumn, AnalysisColumnValueType, CalculateTypeViewText, Column, EChartsOption, NumberCalculateType, StringCalculateType, columnListToRowList, createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getListMedian, getListStandardDeviation, getListVariance, getValueListCalculateValue } from "../../..";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
+import { DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
 import { ColumnRelationTreeNode, SunburstDataItem } from "./interfaces";
 
 const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "圖表",
     },
+    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
     tooltip: {
         trigger: 'item',
         formatter: '{b}<br/> 值: {c}<br/>'
-    },
-    toolbox: {
-        show: true,
-        top: 30,
-        feature: {
-            saveAsImage: { show: true }
-        }
     },
     series: {
         type: 'sunburst',
@@ -69,7 +64,7 @@ const getColumnRelationTreeWithMeasureColumnMap = (
             currentCategorySet.add(row[currentColumnName]);
         })
         currentCategorySet.forEach((category: any) => {
-            let currentCategoryRowList = rowList.concat().filter((row: any) => {
+            let currentCategoryRowList = [...rowList].filter((row: any) => {
                 return (row[currentColumnName] === category);
             });
             let value = 0;
@@ -77,7 +72,7 @@ const getColumnRelationTreeWithMeasureColumnMap = (
             // 已建立完成關係樹，依據計算數值列計算對應的 value
             if (orderNumber === relationTreeColumnNameOrderList.length - 1) {
                 const { title, calculateType } = measureAnalysisColumn;
-                const measureValueListOfRowList: (string | number | null)[] = rowList.map(row => row[title]);
+                const measureValueListOfRowList: (string | number | null)[] = currentCategoryRowList.map(row => row[title]);
                 const generalMeasureValueListOfRowList = filterOutListEmptyValues(measureValueListOfRowList) as (string | number)[];
                 value = getValueListCalculateValue(generalMeasureValueListOfRowList, calculateType);
             }

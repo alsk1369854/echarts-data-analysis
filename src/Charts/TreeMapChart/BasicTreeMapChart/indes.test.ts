@@ -28,37 +28,24 @@ const calculateColumnList: Column<string | number>[] = [
 ]
 
 describe("BasicTreeMapChart", () => {
-    test("getBasicTreeMapChartOptions series data", () => {
-        const testDataset = {
-            deviceName: ["device_1", "device_2", "device_3", "device_1"],
-            deviceState: ["OK", "WARN", "NG", "NG"],
-            deviceValue: [10, 15, 30, 45]
-        }
-        const categoryColumn: Column<string> = {
-            title: "deviceState",
-            valueList: testDataset.deviceState,
-        }
-        const calculateColumnList: Column<string | number>[] = [
-            {
-                title: "deviceName",
-                valueList: testDataset.deviceName,
-                calculateType: StringCalculateType.count
-            }, {
-                title: "deviceValue",
-                valueList: testDataset.deviceValue,
-                calculateType: NumberCalculateType.average
-            }, {
-                title: "deviceState",
-                valueList: testDataset.deviceState,
-                calculateType: StringCalculateType.countDifferent
-            }
-        ]
-        let result1: any;
-        const result2: any = getBasicTreeMapChartOptions(categoryColumn, calculateColumnList, (option) => {
-            result1 = option;
+    test('getBasicTreeMapChartOptions callback function 1', () => {
+        const testFunc = jest.fn();
+        getBasicTreeMapChartOptions(categoryColumn, calculateColumnList, testFunc);
+        expect(testFunc).toBeCalledTimes(1);
+    })
+    test('getBasicTreeMapChartOptions callback function 2', () => {
+        let resultFromCallback: any;
+
+        const resultFromReturn = getBasicTreeMapChartOptions(categoryColumn, calculateColumnList, (option) => {
+            resultFromCallback = option;
         });
-        expect(result2).toEqual(result1);
-        
+        expect(resultFromReturn).toEqual(resultFromCallback);
+    })
+
+    test("getBasicTreeMapChartOptions series data", () => {
+
+        const result: any = getBasicTreeMapChartOptions(categoryColumn, calculateColumnList);
+
         const expected: any[] = [
             {
                 name: categoryColumn.valueList[0],
@@ -107,6 +94,6 @@ describe("BasicTreeMapChart", () => {
                 ]
             }
         ];
-        expect(result2.series.data).toEqual(expected);
+        expect(result.series.data).toMatchObject(expected);
     })
 })

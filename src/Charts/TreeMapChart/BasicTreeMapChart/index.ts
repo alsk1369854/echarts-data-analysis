@@ -1,20 +1,14 @@
-import { CalculateTypeViewText } from './../../../Utils/BasicEnum';
 import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
 import { Column, EChartsOption } from "../../../interfaces";
 import { getChartOptionTitleText } from '../../../Utils/ChartUtil';
+import { DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from '../../../configs/ChartsOptionConfig';
 
 const DEFAULT_ECHARTS_OPTION: EChartsOption = {
     title: {
         text: "圖表",
     },
+    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
     tooltip: {},
-    toolbox: {
-        show: true,
-        top: 30,
-        feature: {
-            saveAsImage: { show: true }
-        }
-    },
     series: {
         type: 'treemap',
         data: [
