@@ -1,5 +1,5 @@
-import { CalculateTypeViewText, NumberCalculateType, StringCalculateType } from '../../../Utils'
-import { Column } from '../../../interfaces'
+import { AnalysisColumnValueType, CalculateTypeViewText, NumberCalculateType, StringCalculateType } from '../../../Utils'
+import { AnalysisColumn, Column } from '../../../interfaces'
 import { getRadarChartOptions } from './index'
 
 const testDataset = {
@@ -11,17 +11,20 @@ const categoryColumn: Column<string> = {
     title: "deviceState",
     valueList: testDataset.deviceState,
 }
-const yAxisColumnList: Column<string | number>[] = [
+const yAxisColumnList: AnalysisColumn<string | number>[] = [
     {
         title: "deviceName",
+        valueType: AnalysisColumnValueType.string,
         valueList: testDataset.deviceName,
         calculateType: StringCalculateType.count
     }, {
         title: "deviceValue",
+        valueType: AnalysisColumnValueType.number,
         valueList: testDataset.deviceValue,
         calculateType: NumberCalculateType.average
     }, {
         title: "deviceState",
+        valueType: AnalysisColumnValueType.string,
         valueList: testDataset.deviceState,
         calculateType: StringCalculateType.countDifferent
     }
@@ -36,7 +39,7 @@ describe('Basic Radar Chart', () => {
     test('getRadarChartOptions callback function 2', () => {
         let resultFromCallback: any;
 
-        const resultFromReturn = getRadarChartOptions(categoryColumn, yAxisColumnList, (option)=>{
+        const resultFromReturn = getRadarChartOptions(categoryColumn, yAxisColumnList, (option) => {
             resultFromCallback = option;
         });
         expect(resultFromReturn).toEqual(resultFromCallback);

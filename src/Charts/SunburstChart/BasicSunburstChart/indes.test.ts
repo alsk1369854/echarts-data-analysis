@@ -1,5 +1,5 @@
-import { NumberCalculateType, StringCalculateType } from '../../../Utils'
-import { Column } from '../../../interfaces'
+import { AnalysisColumnValueType, NumberCalculateType, StringCalculateType } from '../../../Utils'
+import { AnalysisColumn, Column } from '../../../interfaces'
 import { getBasicSunburstChartOptions } from './index'
 
 const testDataset = {
@@ -17,8 +17,9 @@ const categoryColumnList: Column<string | number>[] = [
     }
 ]
 
-const calculateColumn: Column<number> = {
+const calculateColumn: AnalysisColumn<number> = {
     title: "deviceValue",
+    valueType: AnalysisColumnValueType.number,
     valueList: testDataset.deviceValue,
     calculateType: NumberCalculateType.sum
 }

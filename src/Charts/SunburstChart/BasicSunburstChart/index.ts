@@ -1,4 +1,4 @@
-import { AnalysisColumn, AnalysisColumnValueType, CalculateTypeViewText, Column, EChartsOption, NumberCalculateType, StringCalculateType, columnListToRowList, createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getListMedian, getListStandardDeviation, getListVariance, getValueListCalculateValue } from "../../..";
+import { AnalysisColumn, AnalysisColumnValueType, CalculateTypeViewText, Column, EChartsOption, NumberCalculateType, StringCalculateType, columnListToRowList, createCalculateAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getListMedian, getListStandardDeviation, getListVariance, getValueListCalculateValue } from "../../..";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
 import { ColumnRelationTreeNode, SunburstDataItem } from "./interfaces";
@@ -114,7 +114,7 @@ const getSunburstDataListByColumnRelationTreeMap = (
 
 export const getBasicSunburstChartOptions = (
     categoryColumnList: Column<string | number | null>[],
-    measureColumn: Column<string | number | null>,
+    measureColumn: AnalysisColumn<string | number | null>,
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init result value
@@ -122,7 +122,7 @@ export const getBasicSunburstChartOptions = (
 
     // create analysis column
     const categoryAnalysisColumnList = categoryColumnList.map(column => createCategoryColumn(column));
-    const measureAnalysisColumn = createAnalysisColumn(measureColumn);
+    const measureAnalysisColumn = createCalculateAnalysisColumn(measureColumn);
 
     // update title text
     let newTitle = {

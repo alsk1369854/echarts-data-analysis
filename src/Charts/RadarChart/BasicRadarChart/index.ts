@@ -1,7 +1,7 @@
-import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
+import { createCalculateAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
-import { Column, EChartsOption } from "../../../interfaces";
+import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
 import { RadarIndicatorItem } from "./interfaces";
 
 export const DEFAULT_ECHARTS_OPTION = {
@@ -51,7 +51,7 @@ export const DEFAULT_ECHARTS_OPTION = {
 
 export const getRadarChartOptions = (
     categoryColumn: Column<string | number | null>,
-    yAxisColumnList: Column<string | number | null>[],
+    yAxisColumnList: AnalysisColumn<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init return value
@@ -60,7 +60,7 @@ export const getRadarChartOptions = (
     // create analysis column
     const categoryAnalysisColumn = createCategoryColumn(categoryColumn);
     const yAxisAnalysisColumnList = yAxisColumnList.map(column => {
-        return createAnalysisColumn(column);
+        return createCalculateAnalysisColumn(column);
     })
 
     // create categroy corresponds y-axis column values map

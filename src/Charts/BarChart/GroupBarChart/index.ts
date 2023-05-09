@@ -1,4 +1,4 @@
-import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue, swapXAxisAndYAxis } from "../../../Utils";
+import { createCalculateAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue, swapXAxisAndYAxis } from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
 import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
 import { AnalysisColumn, Column, EChartsOption } from './../../../interfaces';
@@ -80,7 +80,7 @@ const getSeriesItem = (
 
 export const getGroupBarChartOptions = (
     xAxisColumn: Column<string | number | null>,
-    yAxisColumnList: Column<string | number | null>[],
+    yAxisColumnList: AnalysisColumn<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init return value
@@ -89,7 +89,7 @@ export const getGroupBarChartOptions = (
     // create analysis column
     const xAxisAnalysisColumn: Column<string> = createCategoryColumn(xAxisColumn);
     const yAxisAnalysisColumnList: AnalysisColumn<string | number | null>[] = yAxisColumnList.map(column => {
-        return createAnalysisColumn(column);
+        return createCalculateAnalysisColumn(column);
     })
     // create x axis category corresponds y axis value list map
     const xAxisColumnValueCategoryCorrespondsYAxisColumnsValueListMap =

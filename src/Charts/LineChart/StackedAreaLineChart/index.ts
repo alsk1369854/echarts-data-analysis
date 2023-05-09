@@ -1,9 +1,9 @@
-import { Column, EChartsOption } from "../../../interfaces";
+import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
 import { getStackedLineChartOptions } from "../StackedLineChart";
 
 export const getStackedAreaLineChartOptions = (
     xAxisColumn: Column<string | number | null>,
-    yAxisColumnList: Column<string | number | null>[],
+    yAxisColumnList: AnalysisColumn<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getStackedLineChartOptions(xAxisColumn, yAxisColumnList);

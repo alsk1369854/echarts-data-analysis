@@ -1,6 +1,6 @@
-import { Column } from '../../interfaces'
-import { CalculateTypeViewText, NumberCalculateType, StringCalculateType } from '../BasicEnum'
-import { createAnalysisColumn, createCategoryColumn } from '../BasicUtil'
+import { AnalysisColumn, Column } from '../../interfaces'
+import { AnalysisColumnValueType, CalculateTypeViewText, NumberCalculateType, StringCalculateType } from '../BasicEnum'
+import { createCalculateAnalysisColumn, createCategoryColumn } from '../BasicUtil'
 import { getChartOptionTitleText } from './index'
 
 const testDataset = {
@@ -16,22 +16,25 @@ describe('ChartUtil', () => {
             title: "deviceState",
             valueList: testDataset.deviceState,
         }
-        const calculateColumnList: Column<string | number>[] = [
+        const calculateColumnList: AnalysisColumn<string | number>[] = [
             {
                 title: "deviceName",
+                valueType: AnalysisColumnValueType.string,
                 valueList: testDataset.deviceName,
                 calculateType: StringCalculateType.count
             }, {
                 title: "deviceValue",
+                valueType: AnalysisColumnValueType.number,
                 valueList: testDataset.deviceValue,
                 calculateType: NumberCalculateType.average
             }, {
                 title: "deviceState",
+                valueType: AnalysisColumnValueType.string,
                 valueList: testDataset.deviceState,
                 calculateType: StringCalculateType.countDifferent
             }
         ]
-        const calculateAnalysisColumnList = calculateColumnList.map((column) => createAnalysisColumn(column));
+        const calculateAnalysisColumnList = calculateColumnList.map((column) => createCalculateAnalysisColumn(column));
 
         const result = getChartOptionTitleText(calculateAnalysisColumnList, [mainColumn]);
         const expectedTitleText = `${calculateAnalysisColumnList[0].title} 的${CalculateTypeViewText[calculateAnalysisColumnList[0].calculateType]}, ${calculateAnalysisColumnList[1].title} 的${CalculateTypeViewText[calculateAnalysisColumnList[1].calculateType]} 與 ${calculateAnalysisColumnList[2].title} 的${CalculateTypeViewText[calculateAnalysisColumnList[2].calculateType]} 依據 ${mainColumn.title}`
@@ -52,13 +55,14 @@ describe('ChartUtil', () => {
             }
         ]
         const gereralCategroyColumnList = categroyColumnList.map(column => createCategoryColumn(column))
-        const calculateColumn: Column<number> = {
+        const calculateColumn: AnalysisColumn<number> = {
             title: "deviceValue",
+            valueType: AnalysisColumnValueType.number,
             valueList: testDataset.deviceValue,
             calculateType: NumberCalculateType.average
         }
 
-        const calculateAnalysisColumn = createAnalysisColumn(calculateColumn);
+        const calculateAnalysisColumn = createCalculateAnalysisColumn(calculateColumn);
 
         const result = getChartOptionTitleText([calculateAnalysisColumn], gereralCategroyColumnList);
         const expectedTitleText = `${calculateAnalysisColumn.title} 的${CalculateTypeViewText[calculateAnalysisColumn.calculateType]} 依據 ${gereralCategroyColumnList[0].title}, ${gereralCategroyColumnList[1].title} 與 ${gereralCategroyColumnList[2].title}`

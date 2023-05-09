@@ -1,6 +1,6 @@
 import { CalculateTypeViewText, NumberCalculateType, StringCalculateType } from '../../../Utils/BasicEnum';
 import { AnalysisColumnValueType } from '../../..';
-import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListMedian, getListStandardDeviation, getListVariance, getValueListCalculateValue } from '../../../Utils';
+import { createCalculateAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListMedian, getListStandardDeviation, getListVariance, getValueListCalculateValue } from '../../../Utils';
 import { AnalysisColumn, Column, EChartsOption } from '../../../interfaces';
 import { getChartOptionTitleText } from '../../../Utils/ChartUtil';
 import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from '../../../configs/ChartsOptionConfig';
@@ -20,7 +20,7 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
         label: {
             formatter: '{b}({d}%)',
         },
-        top: 30,
+        top: 60,
         data: [],
         radius: [0, '70%'],
         emphasis: {
@@ -35,7 +35,7 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
 
 export const getBasicPieChartOptions = (
     categoryColumn: Column<string | number | null>,
-    valueColumn: Column<string | number | null>,
+    valueColumn: AnalysisColumn<string | number | null>,
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     // init result value
@@ -43,7 +43,7 @@ export const getBasicPieChartOptions = (
 
     // create analysis column
     const generalCategoryColumn = createCategoryColumn(categoryColumn);
-    const valueAnalysisColumn = createAnalysisColumn(valueColumn);
+    const valueAnalysisColumn = createCalculateAnalysisColumn(valueColumn);
     const { title: valueColumnTitle, calculateType: valueColumnCalculateType } = valueAnalysisColumn;
 
     // update option title text

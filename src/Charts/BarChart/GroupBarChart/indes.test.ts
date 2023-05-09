@@ -1,5 +1,5 @@
-import { NumberCalculateType, StringCalculateType } from '../../../Utils'
-import { Column } from '../../../interfaces'
+import { AnalysisColumnValueType, NumberCalculateType, StringCalculateType } from '../../../Utils'
+import { AnalysisColumn, Column } from '../../../interfaces'
 import { getGroupBarChartOptions } from './index'
 
 const testDataset = {
@@ -11,17 +11,20 @@ const categoryColumn: Column<string> = {
     title: "deviceState",
     valueList: testDataset.deviceState,
 }
-const calculateColumnList: Column<string | number>[] = [
+const calculateColumnList: AnalysisColumn<string | number>[] = [
     {
         title: "deviceName",
+        valueType: AnalysisColumnValueType.string,
         valueList: testDataset.deviceName,
         calculateType: StringCalculateType.count
     }, {
         title: "deviceValue",
+        valueType: AnalysisColumnValueType.number,
         valueList: testDataset.deviceValue,
         calculateType: NumberCalculateType.average
     }, {
         title: "deviceState",
+        valueType: AnalysisColumnValueType.string,
         valueList: testDataset.deviceState,
         calculateType: StringCalculateType.countDifferent
     }

@@ -1,5 +1,5 @@
-import { createAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
-import { Column, EChartsOption } from "../../../interfaces";
+import { createCalculateAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
+import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
 import { getChartOptionTitleText } from '../../../Utils/ChartUtil';
 import { DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from '../../../configs/ChartsOptionConfig';
 
@@ -50,13 +50,13 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
 
 export const getBasicTreeMapChartOptions = (
     categoryColumn: Column<string | number | null>,
-    calculateColumnList: Column<string | number | null>[],
+    calculateColumnList: AnalysisColumn<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION };
 
     const generalCategoryColumn = createCategoryColumn(categoryColumn);
-    const calculateAnalysisColumnList = calculateColumnList.map(column => createAnalysisColumn(column));
+    const calculateAnalysisColumnList = calculateColumnList.map(column => createCalculateAnalysisColumn(column));
 
     const categoryCorrespondsCalculateColumnValueListMap = getColumnValueCategoryCorrespondsOtherColumnValueListMap(generalCategoryColumn, calculateAnalysisColumnList);
 

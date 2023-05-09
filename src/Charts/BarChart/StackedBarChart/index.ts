@@ -1,10 +1,10 @@
-import { Column, EChartsOption } from './../../../interfaces';
+import { AnalysisColumn, Column, EChartsOption } from './../../../interfaces';
 import { getGroupBarChartOptions } from "../GroupBarChart";
 
 
 export const getStackedBarChartOptions = (
   xAxisColumn: Column<string | number | null>,
-  yAxisColumnList: Column<string | number | null>[],
+  yAxisColumnList: AnalysisColumn<string | number | null>[],
   callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
   let eChartsOption = getGroupBarChartOptions(xAxisColumn, yAxisColumnList);

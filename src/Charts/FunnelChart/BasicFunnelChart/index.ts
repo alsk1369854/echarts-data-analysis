@@ -1,7 +1,7 @@
 import { filterOutListEmptyValues } from './../../../Utils/BasicUtil/index';
-import { createAnalysisColumn, createCategoryColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
+import { createCalculateAnalysisColumn, createCategoryColumn, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
-import { Column, EChartsOption } from "../../../interfaces";
+import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
 import { SeriesDataItem } from './interfaces';
 import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from '../../../configs/ChartsOptionConfig';
 
@@ -40,13 +40,13 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
 
 export const getBasicFunnelChartOptions = (
     categoryColumn: Column<string | number | null>,
-    calculateColumn: Column<string | number | null>,
+    calculateColumn: AnalysisColumn<string | number | null>,
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION };
 
     const generalCategoryColumn = createCategoryColumn(categoryColumn);
-    const calculateAnalysisColumn = createAnalysisColumn(calculateColumn);
+    const calculateAnalysisColumn = createCalculateAnalysisColumn(calculateColumn);
     const { title: calculateColumnTitle, calculateType: calculateColumnCalculateType } = calculateAnalysisColumn
     const categoryCorrespondsCalculateColumnValueListMap = getColumnValueCategoryCorrespondsOtherColumnValueListMap(generalCategoryColumn, [calculateAnalysisColumn]);
 

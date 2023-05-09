@@ -1,10 +1,10 @@
 import { getStackedBarChartOptions } from '../../BarChart';
-import { Column, EChartsOption } from './../../../interfaces';
+import { AnalysisColumn, Column, EChartsOption } from './../../../interfaces';
 
 
 export const getStackedLineChartOptions = (
     xAxisColumn: Column<string | number | null>,
-    yAxisColumnList: Column<string | number | null>[],
+    yAxisColumnList: AnalysisColumn<string | number | null>[],
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getStackedBarChartOptions(xAxisColumn, yAxisColumnList);

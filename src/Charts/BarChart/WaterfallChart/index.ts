@@ -1,5 +1,5 @@
 import { DEFAULT_ECHARTES_OPTIONS_GRID, DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
-import { Column, EChartsOption } from "../../../interfaces";
+import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
 import { getGroupBarChartOptions } from "../GroupBarChart";
 
 const DEFAULT_ECHARTS_OPTION: EChartsOption = {
@@ -59,7 +59,7 @@ const DEFAULT_ECHARTS_OPTION: EChartsOption = {
 
 export const getWaterfallChartOptions = (
     categoryColumn: Column<string | number | null>,
-    yAxisColumn: Column<string | number | null>,
+    yAxisColumn: AnalysisColumn<string | number | null>,
     callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
     let eChartsOption = getGroupBarChartOptions(categoryColumn, [yAxisColumn]);

@@ -1,6 +1,7 @@
+import { number } from 'echarts';
 import { AnalysisColumn, Column, EChartsOption } from '../../interfaces';
 import { AnalysisColumnValueType, NumberCalculateType, StringCalculateType } from '../BasicEnum';
-import { isNumberValue, getColumnValueListType, createAnalysisColumn, getMinColumnLength, columnListToRowList, swapXAxisAndYAxis, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListStandardDeviation, getListMedian, getListVariance, createCategoryColumn, getValueListCalculateValue } from './index'
+import { isNumberValue, getColumnValueListType, createCalculateAnalysisColumn, getMinColumnLength, columnListToRowList, swapXAxisAndYAxis, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getListStandardDeviation, getListMedian, getListVariance, createCategoryColumn, getValueListCalculateValue } from './index'
 
 describe('BasicUtil', () => {
     // isNumberValue()
@@ -34,14 +35,15 @@ describe('BasicUtil', () => {
         expect(result).toBe(AnalysisColumnValueType.string);
     })
 
-    // createAnalysisColumn()
-    test("createAnalysisColumn 1", () => {
-        const column: Column<number> = {
+    // createCalculateAnalysisColumn()
+    test("createCalculateAnalysisColumn 1", () => {
+        const column: AnalysisColumn<number> = {
             title: "test column",
+            valueType: AnalysisColumnValueType.number,
             valueList: [1, 2, 3],
             calculateType: NumberCalculateType.average
         };
-        const result = createAnalysisColumn(column);
+        const result = createCalculateAnalysisColumn(column);
 
         const expected: AnalysisColumn<number> = {
             ...column,
@@ -51,13 +53,14 @@ describe('BasicUtil', () => {
 
         expect(result).toEqual(expected);
     })
-    test("createAnalysisColumn 1", () => {
-        const column: Column<number> = {
+    test("createCalculateAnalysisColumn 1", () => {
+        const column: AnalysisColumn<number> = {
             title: "test column",
+            valueType: AnalysisColumnValueType.number,
             valueList: [1, 2, 3],
             calculateType: NumberCalculateType.average
         };
-        const result = createAnalysisColumn(column);
+        const result = createCalculateAnalysisColumn(column);
 
         const expected: AnalysisColumn<number> = {
             ...column,
@@ -67,13 +70,14 @@ describe('BasicUtil', () => {
 
         expect(result).toEqual(expected);
     })
-    test("createAnalysisColumn 2", () => {
-        const column: Column<number | null> = {
+    test("createCalculateAnalysisColumn 2", () => {
+        const column: AnalysisColumn<number | null> = {
             title: "test column",
+            valueType: AnalysisColumnValueType.number,
             valueList: [1, null, 3],
             calculateType: NumberCalculateType.average
         };
-        const result = createAnalysisColumn(column);
+        const result = createCalculateAnalysisColumn(column);
 
         const expected: AnalysisColumn<number | null> = {
             ...column,
@@ -83,13 +87,14 @@ describe('BasicUtil', () => {
 
         expect(result).toEqual(expected);
     })
-    test("createAnalysisColumn 3", () => {
-        const column: Column<number | null | string> = {
+    test("createCalculateAnalysisColumn 3", () => {
+        const column: AnalysisColumn<number | null | string> = {
             title: "test column",
+            valueType: AnalysisColumnValueType.string,
             valueList: ["12", null, 3],
             calculateType: NumberCalculateType.average
         };
-        const result = createAnalysisColumn(column);
+        const result = createCalculateAnalysisColumn(column);
 
         const expected: AnalysisColumn<number | null | string> = {
             ...column,
@@ -99,13 +104,14 @@ describe('BasicUtil', () => {
 
         expect(result).toEqual(expected);
     })
-    test("createAnalysisColumn 4", () => {
-        const column: Column<string | null> = {
+    test("createCalculateAnalysisColumn 4", () => {
+        const column: AnalysisColumn<string | null> = {
             title: "test column",
+            valueType: AnalysisColumnValueType.string,
             valueList: ["12", null, "22"],
             calculateType: StringCalculateType.countDifferent
         };
-        const result = createAnalysisColumn(column);
+        const result = createCalculateAnalysisColumn(column);
 
         const expected: AnalysisColumn<string | null> = {
             ...column,
@@ -115,32 +121,18 @@ describe('BasicUtil', () => {
 
         expect(result).toEqual(expected);
     })
-    test("createAnalysisColumn 5", () => {
-        const column: Column<number> = {
+    test("createCalculateAnalysisColumn 5", () => {
+        const column: AnalysisColumn<number> = {
             title: "test column",
+            valueType: AnalysisColumnValueType.number,
             valueList: [12, 25, 22],
             calculateType: StringCalculateType.countDifferent
         };
-        const result = createAnalysisColumn(column);
+        const result = createCalculateAnalysisColumn(column);
 
         const expected: AnalysisColumn<number> = {
             ...column,
             calculateType: NumberCalculateType.countDifferent,
-            valueType: getColumnValueListType(column.valueList),
-        }
-
-        expect(result).toEqual(expected);
-    })
-    test("createAnalysisColumn 6", () => {
-        const column: Column<number> = {
-            title: "test column",
-            valueList: [12, 25, 22],
-        };
-        const result = createAnalysisColumn(column);
-
-        const expected: AnalysisColumn<number> = {
-            ...column,
-            calculateType: NumberCalculateType.count,
             valueType: getColumnValueListType(column.valueList),
         }
 

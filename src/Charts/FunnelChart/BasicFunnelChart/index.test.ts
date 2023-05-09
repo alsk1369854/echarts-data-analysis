@@ -1,5 +1,5 @@
-import { NumberCalculateType } from '../../../Utils'
-import { Column } from '../../../interfaces'
+import { AnalysisColumnValueType, NumberCalculateType } from '../../../Utils'
+import { AnalysisColumn, Column } from '../../../interfaces'
 import { getBasicFunnelChartOptions } from './index'
 import { SeriesDataItem } from './interfaces'
 
@@ -13,8 +13,9 @@ const categoryColumn: Column<string> = {
     valueList: testDataset.deviceState,
 }
 
-const calculateColumn: Column<number> = {
+const calculateColumn: AnalysisColumn<number> = {
     title: "deviceValue",
+    valueType: AnalysisColumnValueType.number,
     valueList: testDataset.deviceValue,
     calculateType: NumberCalculateType.sum
 }

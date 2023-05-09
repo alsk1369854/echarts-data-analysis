@@ -34,10 +34,10 @@ export const getColumnValueListType = (
 }
 
 
-export const createAnalysisColumn = (
-    column: Column<string | number | null>,
+export const createCalculateAnalysisColumn = (
+    analysisColumn: AnalysisColumn<string | number | null>,
 ): AnalysisColumn<string | number | null> => {
-    const { title, valueList, calculateType } = column;
+    const { title, valueList, calculateType } = analysisColumn;
 
     const valueType = getColumnValueListType(valueList);
 
