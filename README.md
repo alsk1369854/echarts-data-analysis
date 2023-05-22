@@ -28,9 +28,9 @@
 
 ```typescript
 // import ECharts library
-import { EChartsOption, init, EChartsType } from 'echarts'
+import { init, EChartsType } from 'echarts'
 // import echarts-data-analysis library
-import { Column, NumberCalculateType, StringCalculateType, getStackedBarChartOptions } from '../../dist'
+import { Column, NumberCalculateType, StringCalculateType, EChartsDataAnalysis, AnalysisColumn, getColumnValueListType } from '../../dist'
 
 
 // basic preparation DOM initialization ECharts
@@ -39,19 +39,19 @@ let myChart: EChartsType = init(document.getElementById('main') as HTMLElement);
 
 // chart analysis dataset
 // 圖表分析資料集
-const myDataset: {} = {
-    設備名稱: ["device_1", "device_2", "device_3"],
-    設備狀態: ["OK",       "WARN",     "NG"],
-    設備數值: [10,         15,         30]
+const myDataset: any = {
+    設備名稱: ["Device 01", "Device 02", "Device 03", "Device 04"],
+    設備狀態: ["OK", "NG", "WARN", "OK"],
+    設備數值: [10, 30, 15, 9]
 }
 
 // create column object
 // 建立列物件
-const xAxisColumn: Column = {
+const xAxisColumn: Column<string> = {
     title: "設備名稱",
     valueList: myDataset["設備名稱"]
 }
-const yAxisColumnList: Column[] = [
+const yAxisColumnList: AnalysisColumn<any>[] = [
     {
         title: "設備狀態",
         valueList: myDataset["設備狀態"],
@@ -64,29 +64,19 @@ const yAxisColumnList: Column[] = [
     }
 ]
 
+
 // get ECharts stacked bar chart options according to columns
 // 根據列數據獲取 ECharts 堆積條形圖配置項
-getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option: EChartsOption) => {
+EChartsDataAnalysis.getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option) => {
     // set options for ECharts DOM
     // 為 ECharts DOM 設置配置項
     myChart.setOption(option);
-})
+})## Get ECharts option functions (獲取圖表方法)
 ```
 
-## Get ECharts option functions (獲取圖表方法)
 
-### Line charts (折線圖)
 
-| Function Title                                                                                                                                         | Return Type   | Description                                                                                                                      |
-| ------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------- | -------------------------------------------------------------------------------------------------------------------------------- |
-| getStackedLineChartOptions = (     xAxisColumn: Column,     yAxisColumnList: Column[],     callbackFunc?: (eChartsOption: EChartsOption) => void )     | EChartsOption | Get  ECharts stacked line chart option by main x-axis column and multiple y-axis columns \| 通過主x軸列和多個y軸列獲取ECharts堆疊折線圖配置選項       |
-| getStackedAreaLineChartOptions = (     xAxisColumn: Column,     yAxisColumnList: Column[],     callbackFunc?: (eChartsOption: EChartsOption) => void ) | EChartsOption | Get ECharts stacked area line chart option by main x-axis column and multiple y-axis columns \| 通過主x軸列和多個y軸列獲取ECharts堆疊面積折線圖配置選項 |
 
-### Bar charts (柱狀圖)
-
-| Function Title | Return Type | Description |
-| -------------- | ----------- | ----------- |
-|                |             |             |
 
 ## Enum
 

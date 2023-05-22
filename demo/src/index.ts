@@ -38,13 +38,11 @@ const yAxisColumnList: AnalysisColumn<any>[] = [
 
 // get ECharts stacked bar chart options according to columns
 // 根據列數據獲取 ECharts 堆積條形圖配置項
-// getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option: EChartsOption) => {
-// getBasicPieChartOptions(xAxisColumn, yAxisColumnList[1], (option: EChartsOption) => {
-//     console.log(option)
-//     // set options for ECharts DOM
-//     // 為 ECharts DOM 設置配置項
-//     myChart.setOption(option);
-// })
+EChartsDataAnalysis.getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option) => {
+    // set options for ECharts DOM
+    // 為 ECharts DOM 設置配置項
+    myChart.setOption(option);
+})
 
 // EChartsDataAnalysis.getGroupBarChartOptions(xAxisColumn, yAxisColumnList, (option) => {
 //     console.log(option)
@@ -52,10 +50,10 @@ const yAxisColumnList: AnalysisColumn<any>[] = [
 // })
 
 
-EChartsDataAnalysis.getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option) => {
-    console.log(option)
-    myChart.setOption(option);
-})
+// EChartsDataAnalysis.getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option) => {
+//     console.log(option)
+//     myChart.setOption(option);
+// })
 
 
 // EChartsDataAnalysis.getRadarChartOptions(xAxisColumn, yAxisColumnList, (option)=>{
