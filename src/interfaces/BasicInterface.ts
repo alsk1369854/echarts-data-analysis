@@ -10,6 +10,6 @@ export interface Column<T extends string | number | null> {
 }
 
 export interface AnalysisColumn<T extends string | number | null> extends Column<T> {
-    valueType: AnalysisColumnValueType,
+    valueType?: AnalysisColumnValueType,
     calculateType: StringCalculateType | NumberCalculateType
 }

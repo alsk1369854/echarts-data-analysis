@@ -1,7 +1,7 @@
 // import ECharts library
-import { EChartsOption, init, EChartsType } from 'echarts'
+import { init, EChartsType } from 'echarts'
 // import echarts-data-analysis library
-import { Column, NumberCalculateType, StringCalculateType, EChartsDataAnalysis } from '../../dist'
+import { Column, NumberCalculateType, StringCalculateType, EChartsDataAnalysis, AnalysisColumn, getColumnValueListType } from '../../dist'
 
 
 // basic preparation DOM initialization ECharts
@@ -22,7 +22,7 @@ const xAxisColumn: Column<string> = {
     title: "設備名稱",
     valueList: myDataset["設備名稱"]
 }
-const yAxisColumnList: Column<any>[] = [
+const yAxisColumnList: AnalysisColumn<any>[] = [
     {
         title: "設備狀態",
         valueList: myDataset["設備狀態"],

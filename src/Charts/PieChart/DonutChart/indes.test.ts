@@ -45,7 +45,7 @@ describe("DonutChart", () => {
 
     test('getDonutChartOptions option series radius', () => {
         const result: any = getDonutChartOptions(categoryColumn, calculateColumn);
-        expect(result.series).toHaveProperty('radius', ['40%', '80%']);
+        expect(result.series).toHaveProperty('radius', ['40%', '70%']);
     })
 
 })

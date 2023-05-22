@@ -1,7 +1,5 @@
 # ECharts Data Analysis
 
-[![npm version](https://img.shields.io/npm/v/echarts-data-analysis)](https://www.npmjs.com/package/echarts-data-analysis) [![install size](https://img.shields.io/badge/dynamic/json?url=https://packagephobia.com/v2/api.json?p=echarts-data-analysis&query=$.install.pretty&label=install%20size&style=flat-square)](https://packagephobia.now.sh/result?p=echarts-data-analysis) ![check-code-coverage](https://img.shields.io/badge/code--coverage-99.28%25-brightgreen) ![npm type definitions](https://img.shields.io/npm/types/echarts-data-analysis) ![NPM](https://img.shields.io/npm/l/echarts-data-analysis)
-
 ## Quick start (快速開始)
 
 ### HTML
@@ -20,13 +18,11 @@
     <!-- prepare a defined hight and width DOM for ECharts -->
     <!-- 為 ECharts 準備一個定義了寬高的 DOM -->
     <div id="main" style="width: 600px;height:400px;"></div>
-    
+
     <script src="./dist/index.min.js"></script>
 </body>
 </html>
 ```
-
-
 
 ### TypeScript
 
@@ -75,10 +71,7 @@ getStackedBarChartOptions(xAxisColumn, yAxisColumnList, (option: EChartsOption) 
     // 為 ECharts DOM 設置配置項
     myChart.setOption(option);
 })
-
 ```
-
-
 
 ## Get ECharts option functions (獲取圖表方法)
 
