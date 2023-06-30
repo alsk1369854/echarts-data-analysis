@@ -1,4 +1,4 @@
-# ECharts Data Analysis
+# ECharts Data Analysis ![check-code-coverage](https://img.shields.io/badge/code--coverage-99.28%25-brightgreen)
 
 ## Quick start (快速開始)
 

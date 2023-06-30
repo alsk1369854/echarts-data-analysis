@@ -1,135 +1,164 @@
-import { createCalculateAnalysisColumn, createCategoryColumn, filterOutListEmptyValues, getColumnValueCategoryCorrespondsOtherColumnValueListMap, getValueListCalculateValue } from "../../../Utils";
+import {
+  createCalculateAnalysisColumn,
+  createCategoryColumn,
+  filterOutListEmptyValues,
+  getColumnValueCategoryCorrespondsOtherColumnValueListMap,
+  getValueListCalculateValue,
+} from "../../../Utils";
 import { getChartOptionTitleText } from "../../../Utils/ChartUtil";
-import { DEFAULT_ECHARTES_OPTIONS_LEGEND, DEFAULT_ECHARTES_OPTIONS_TOOLBOX } from "../../../configs/ChartsOptionConfig";
+import {
+  DEFAULT_ECHARTS_OPTIONS_LEGEND,
+  DEFAULT_ECHARTS_OPTIONS_TOOLBOX,
+} from "../../../configs/ChartsOptionConfig";
 import { AnalysisColumn, Column, EChartsOption } from "../../../interfaces";
 import { RadarIndicatorItem } from "./interfaces";
 
 export const DEFAULT_ECHARTS_OPTION = {
-    title: {
-        text: 'Basic Radar Chart'
+  title: {
+    text: "Basic Radar Chart",
+  },
+  legend: DEFAULT_ECHARTS_OPTIONS_LEGEND,
+  grid: { top: 60 },
+  toolbox: DEFAULT_ECHARTS_OPTIONS_TOOLBOX,
+  tooltip: {
+    trigger: "item",
+    position: "right",
+  },
+  radar: {
+    center: ["50%", "60%"], // chart position x-axis and y-axis
+    // radius: 80, // chart size
+    indicator: [
+      { name: "Sales", max: 6500 },
+      { name: "Administration", max: 16000 },
+      { name: "Information Technology", max: 30000 },
+      { name: "Customer Support", max: 38000 },
+      { name: "Development", max: 52000 },
+      { name: "Marketing", max: 25000 },
+    ],
+  },
+  series: {
+    type: "radar",
+    // symbol: 'none', // 點顯示
+    emphasis: {
+      lineStyle: {
+        width: 4,
+      },
     },
-    legend: DEFAULT_ECHARTES_OPTIONS_LEGEND,
-    grid: { top: 60 },
-    toolbox: DEFAULT_ECHARTES_OPTIONS_TOOLBOX,
-    tooltip: {
-        trigger: 'item',
-        position: "right"
-    },
-    radar: {
-        center: ['50%', '60%'], // chart position x-axis and y-axis
-        // radius: 80, // chart size
-        indicator: [
-            { name: 'Sales', max: 6500 },
-            { name: 'Administration', max: 16000 },
-            { name: 'Information Technology', max: 30000 },
-            { name: 'Customer Support', max: 38000 },
-            { name: 'Development', max: 52000 },
-            { name: 'Marketing', max: 25000 }
-        ]
-    },
-    series: {
-        type: 'radar',
-        // symbol: 'none', // 點顯示
-        emphasis: {
-            lineStyle: {
-                width: 4
-            }
-        },
-        data: [
-            {
-                value: [4200, 3000, 20000, 35000, 50000, 18000],
-                name: 'Allocated Budget'
-            },
-            {
-                value: [5000, 14000, 28000, 26000, 42000, 21000],
-                name: 'Actual Spending'
-            }
-        ]
-    }
-
+    data: [
+      {
+        value: [4200, 3000, 20000, 35000, 50000, 18000],
+        name: "Allocated Budget",
+      },
+      {
+        value: [5000, 14000, 28000, 26000, 42000, 21000],
+        name: "Actual Spending",
+      },
+    ],
+  },
 };
 
 export const getRadarChartOptions = (
-    categoryColumn: Column<string | number | null>,
-    yAxisColumnList: AnalysisColumn<string | number | null>[],
-    callbackFunc?: (eChartsOption: EChartsOption) => void
+  categoryColumn: Column<string | number | null>,
+  yAxisColumnList: AnalysisColumn<string | number | null>[],
+  callbackFunc?: (eChartsOption: EChartsOption) => void
 ): EChartsOption => {
-    // init return value
-    let eChartsOption: EChartsOption = { ...DEFAULT_ECHARTS_OPTION } as EChartsOption;
+  // init return value
+  let eChartsOption: EChartsOption = {
+    ...DEFAULT_ECHARTS_OPTION,
+  } as EChartsOption;
 
-    // create analysis column
-    const categoryAnalysisColumn = createCategoryColumn(categoryColumn);
-    const yAxisAnalysisColumnList = yAxisColumnList.map(column => {
-        return createCalculateAnalysisColumn(column);
-    })
+  // create analysis column
+  const categoryAnalysisColumn = createCategoryColumn(categoryColumn);
+  const yAxisAnalysisColumnList = yAxisColumnList.map((column) => {
+    return createCalculateAnalysisColumn(column);
+  });
 
-    // create categroy corresponds y-axis column values map
-    const categoryCorrespondsYAxisColumnValuesMap = getColumnValueCategoryCorrespondsOtherColumnValueListMap(categoryAnalysisColumn, yAxisAnalysisColumnList);
+  // create categroy corresponds y-axis column values map
+  const categoryCorrespondsYAxisColumnValuesMap =
+    getColumnValueCategoryCorrespondsOtherColumnValueListMap(
+      categoryAnalysisColumn,
+      yAxisAnalysisColumnList
+    );
 
-    // update title text
-    const newTitle: any = {
-        ...eChartsOption.title,
-        text: getChartOptionTitleText(yAxisAnalysisColumnList, [categoryAnalysisColumn])
+  // update title text
+  const newTitle: any = {
+    ...eChartsOption.title,
+    text: getChartOptionTitleText(yAxisAnalysisColumnList, [
+      categoryAnalysisColumn,
+    ]),
+  };
+  eChartsOption.title = newTitle;
+
+  // update legend data
+  const newLegend: any = {
+    ...eChartsOption.legend,
+    data: yAxisAnalysisColumnList.map((column) => column.title),
+  };
+  eChartsOption.legend = newLegend;
+
+  // update radar indicator
+  let newRadar: any = {
+    ...eChartsOption.radar,
+    indicator: [],
+  };
+  let categoryMaximumValueMap: Map<string, number> = new Map();
+  categoryCorrespondsYAxisColumnValuesMap.forEach(
+    (yAxisColumnValuesMap, categoryValue) => {
+      categoryMaximumValueMap.set(categoryValue, Number.MIN_VALUE);
     }
-    eChartsOption.title = newTitle;
+  );
 
-    // update legend data
-    const newLegend: any = {
-        ...eChartsOption.legend,
-        data: yAxisAnalysisColumnList.map((column) => column.title)
-    }
-    eChartsOption.legend = newLegend;
+  // update series data
+  const newSeries: any = {
+    ...eChartsOption.series,
+    data: yAxisAnalysisColumnList.map((column) => {
+      const { title: yAxisTitle, calculateType: yAxisCalculateType } = column;
+      let seriesDataItem: any = {
+        value: [],
+        name: yAxisTitle,
+      };
+      categoryCorrespondsYAxisColumnValuesMap.forEach(
+        (yAxisColumnValuesMap, categoryValue) => {
+          const categoryCorrespondsYAxisColumnValues =
+            yAxisColumnValuesMap.get(yAxisTitle);
+          if (categoryCorrespondsYAxisColumnValues) {
+            const generalCategoryCorrespondsYAxisColumnValues =
+              filterOutListEmptyValues(
+                categoryCorrespondsYAxisColumnValues
+              ) as (string | number)[];
+            const value = getValueListCalculateValue(
+              generalCategoryCorrespondsYAxisColumnValues,
+              yAxisCalculateType
+            );
+            seriesDataItem.value.push(value);
 
-    // update radar indicator
-    let newRadar: any = {
-        ...eChartsOption.radar,
-        indicator: []
-    }
-    let categoryMaximumValueMap: Map<string, number> = new Map();
-    categoryCorrespondsYAxisColumnValuesMap.forEach((yAxisColumnValuesMap, categoryValue) => {
-        categoryMaximumValueMap.set(categoryValue, Number.MIN_VALUE);
-    })
-
-    // update series data
-    const newSeries: any = {
-        ...eChartsOption.series,
-        data: yAxisAnalysisColumnList.map(column => {
-            const { title: yAxisTitle, calculateType: yAxisCalculateType } = column;
-            let seriesDataItem: any = {
-                value: [],
-                name: yAxisTitle
+            // update category maximum value
+            let newCategoryMaximumValue = value;
+            const oldCategoryMaximumValue =
+              categoryMaximumValueMap.get(categoryValue);
+            if (oldCategoryMaximumValue) {
+              newCategoryMaximumValue = Math.max(
+                oldCategoryMaximumValue,
+                value
+              );
             }
-            categoryCorrespondsYAxisColumnValuesMap.forEach((yAxisColumnValuesMap, categoryValue) => {
-                const categoryCorrespondsYAxisColumnValues = yAxisColumnValuesMap.get(yAxisTitle);
-                if (categoryCorrespondsYAxisColumnValues) {
-                    const generalCategoryCorrespondsYAxisColumnValues = filterOutListEmptyValues(categoryCorrespondsYAxisColumnValues) as (string | number)[];
-                    const value = getValueListCalculateValue(generalCategoryCorrespondsYAxisColumnValues, yAxisCalculateType);
-                    seriesDataItem.value.push(value);
+            categoryMaximumValueMap.set(categoryValue, newCategoryMaximumValue);
+          }
+        }
+      );
+      return seriesDataItem;
+    }),
+  };
+  eChartsOption.series = newSeries;
 
-                    // update category maximum value
-                    let newCategoryMaximumValue = value;
-                    const oldCategoryMaximumValue = categoryMaximumValueMap.get(categoryValue);
-                    if (oldCategoryMaximumValue) {
-                        newCategoryMaximumValue = Math.max(oldCategoryMaximumValue, value);
-                    }
-                    categoryMaximumValueMap.set(categoryValue, newCategoryMaximumValue);
-                }
-            })
-            return seriesDataItem;
-        })
-    }
-    eChartsOption.series = newSeries;
+  categoryMaximumValueMap.forEach((categoryMaxiMumValue, category) => {
+    newRadar.indicator.push({
+      name: category,
+      max: categoryMaxiMumValue > 0 ? categoryMaxiMumValue : 0,
+    } as RadarIndicatorItem);
+  });
+  eChartsOption.radar = newRadar;
 
-
-    categoryMaximumValueMap.forEach((categoryMaxiMumValue, category) => {
-        newRadar.indicator.push({
-            name: category,
-            max: (categoryMaxiMumValue > 0) ? categoryMaxiMumValue : 0
-        } as RadarIndicatorItem);
-    })
-    eChartsOption.radar = newRadar;
-
-
-    if (callbackFunc) callbackFunc(eChartsOption);
-    return eChartsOption;
-}
+  if (callbackFunc) callbackFunc(eChartsOption);
+  return eChartsOption;
+};
